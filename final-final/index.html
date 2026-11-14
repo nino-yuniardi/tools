@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Final Final · Nino Studio</title>
+<meta name="description" content="Feed it a messy file name. It tells you the truth, then hands back a clean one.">
+<meta property="og:title" content="Final Final">
+<meta property="og:description" content="A small machine for every file that was finished more than once.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tools.nino.studio/final-final/">
+<meta property="og:image" content="https://tools.nino.studio/final-final/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* Layout idea: a pale aluminium console that fills the phone screen exactly.
+     Raised tiles sit in real gutters; a dark grey glass screen is sunk into the body and scrolls on its own; one orange key at the bottom.
+     File names are always orange, in and out.
+     Single theme by choice: cool silver and one orange. */
+  :root {
+    color-scheme: light;
+    --room: #d6dae2;
+    --shell: #e4e7ed;
+    --tile-hi: #f7f8fb;
+    --tile-lo: #e7eaef;
+    --gutter: #c2c7cf;
+    --print: #23262b;
+    --print-soft: #868c97;
+    --lcd-hi: #3b3e45;
+    --lcd-lo: #292c31;
+    --lcd-ink: #f2f3f6;
+    --lcd-soft: #a4a9b3;
+    --orange: #ee5f12;        /* the key */
+    --orange-lo: #a83e06;
+    --name: #c8470a;          /* every file name, in and out */
+    --name-lit: #ff8a4c;      /* the same orange, as it reads on the dark screen */
+    --ui: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Hanken Grotesk", "Segoe UI", sans-serif;
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { height: 100%; background: var(--room); }
+  body {
+    height: 100%;
+    min-height: 540px;
+    margin: 0;
+    padding: 10px 12px;
+    background: linear-gradient(160deg, #e6e9ef, var(--room) 60%, #c9ced8);
+    background-color: var(--room);
+    color: var(--print);
+    font-family: var(--ui);
+    font-size: 16px;
+    line-height: 1.4;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+  body { display: flex; flex-direction: column; }
+  .back { flex: none; align-self: center; width: 100%; max-width: 420px; padding: 0 8px 8px; font-size: 13px; color: #6b717c; text-decoration: none; }
+  .back:hover { text-decoration: underline; }
+  .back:focus-visible { outline: 2px solid var(--orange-lo); outline-offset: 2px; }
+  .sheet { flex: 1 1 auto; min-height: 0; width: 100%; max-width: 420px; max-height: 860px; margin: 0 auto; }
+
+  /* ---------- shell ---------- */
+  .machine {
+    position: relative;
+    height: 100%;
+    border-radius: 30px;
+    padding: 11px;
+    background: linear-gradient(170deg, #f5f6f9, var(--shell) 50%, #d3d7df);
+    box-shadow:
+      inset 0 1.5px 0 #ffffff,
+      inset 0 -2px 4px rgba(40, 50, 70, 0.12),
+      0 1px 1px rgba(30, 40, 60, 0.12),
+      0 10px 18px rgba(30, 40, 60, 0.12),
+      0 26px 44px rgba(30, 40, 60, 0.2);
+  }
+  /* the tray the tiles sit in: a real recess, lit from above */
+  .tiles {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 124px 1fr;
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+    gap: 3px;
+    padding: 3px;
+    border-radius: 21px;
+    background: linear-gradient(#a9aeb8, var(--gutter) 35%, #d2d6dd);
+    box-shadow:
+      inset 0 2px 3px rgba(40, 50, 70, 0.45),
+      0 1px 0 rgba(255, 255, 255, 0.95),            /* lower lip catches the light */
+      0 -1px 0 rgba(40, 50, 70, 0.28);               /* upper lip in shade */
+  }
+  .tile {
+    position: relative;
+    min-width: 0;
+    border-radius: 5px;
+    background: linear-gradient(176deg, var(--tile-hi), var(--tile-lo));
+    box-shadow:
+      inset 0 1px 0 #ffffff,                         /* top chamfer */
+      inset 1px 0 0 rgba(255, 255, 255, 0.6),
+      inset -1px 0 0 rgba(40, 50, 70, 0.1),
+      inset 0 -1.5px 1px rgba(40, 50, 70, 0.2),      /* bottom chamfer */
+      0 1.5px 1.5px rgba(40, 50, 70, 0.38);             /* shadow dropped into the gutter */
+  }
+  .wide { grid-column: 1 / -1; }
+  .tiles > .tile:first-child { border-radius: 18px 18px 5px 5px; }
+  .tiles > .tile:last-child { border-radius: 5px 5px 18px 18px; }
+  .label { margin: 0; font-size: 11px; font-weight: 400; color: var(--print-soft); line-height: 1.2; }
+
+  /* rail */
+  .rail { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 14px 8px 16px; }
+  .badge { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+  h1 { margin: 0; font-size: 15px; font-weight: 500; letter-spacing: -0.01em; white-space: nowrap; }
+  .badge .label { display: flex; align-items: center; gap: 6px; }
+  .led { width: 5px; height: 5px; border-radius: 50%; background: #c3c7cf; transition: background 0.15s, box-shadow 0.15s; }
+  .led.busy { background: var(--orange); box-shadow: 0 0 6px 1px rgba(238, 95, 18, 0.8); }
+
+  .switch-group { display: flex; align-items: center; gap: 9px; flex: none; }
+  .switch-label {
+    font-family: var(--ui);
+    font-size: 12.5px;
+    font-weight: 400;
+    color: #aeb3bd;
+    background: none;
+    border: 0;
+    padding: 12px 0;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .switch-label.on { color: var(--print); font-weight: 500; }
+  .lever {                      /* a plain slide switch */
+    position: relative;
+    flex: none;
+    width: 52px;
+    height: 28px;
+    border-radius: 999px;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    background: linear-gradient(#bcc1ca, #dde0e6);
+    box-shadow: inset 0 2px 3px rgba(40, 50, 70, 0.5), inset 0 0 0 1px rgba(40, 50, 70, 0.18), 0 1px 0 #ffffff;
+    transition: background 0.22s;
+  }
+  .lever[aria-checked="true"] { background: linear-gradient(#1e2024, #3a3d44); }
+  .paddle {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 38% 30%, #ffffff, #e3e6eb 45%, #a9aeb8);
+    box-shadow: 0 2px 4px rgba(30, 40, 60, 0.45), 0 0 0 0.5px rgba(30, 40, 60, 0.35), inset 0 1px 0 #ffffff;
+    transform: translateX(0);
+    transition: transform 0.24s cubic-bezier(0.3, 1.4, 0.5, 1);
+  }
+  .lever[aria-checked="true"] .paddle { transform: translateX(24px); }
+
+  /* entry */
+  .entry { padding: 8px 16px 5px; display: flex; flex-direction: column; gap: 2px; }
+  .entry-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+  .hint { margin: 0; font-size: 11px; color: #aeb3bd; }
+  .lcd-in {
+    display: block;
+    width: 100%;
+    height: calc(2 * 1.32em + 6px);
+    font-family: var(--mono);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.32;
+    letter-spacing: -0.03em;
+    color: var(--name);
+    background: transparent;
+    border: 0;
+    padding: 3px 0;
+    resize: none;
+    overflow-y: auto;
+    overflow-wrap: anywhere;
+    scrollbar-width: none;
+  }
+  .lcd-in::-webkit-scrollbar { display: none; }
+  .lcd-in:focus { outline: none; }
+  .entry:focus-within { box-shadow: inset 0 0 0 2px var(--orange), 0 1.5px 1.5px rgba(40, 50, 70, 0.38); }
+
+  /* meter */
+  .meter-tile { padding: 9px 10px; display: flex; align-items: center; }
+  .dial {
+    position: relative;
+    width: 100%;
+    border-radius: 9px;
+    padding: 2.5px;
+    background: linear-gradient(#9399a4, #e9ecf1);
+    box-shadow: 0 1px 0 #ffffff, 0 0 14px rgba(255, 214, 150, 0.75);
+  }
+  .dial svg { display: block; width: 100%; height: auto; border-radius: 7px; }
+  .dial::after {
+    content: "";
+    position: absolute;
+    inset: 2.5px;
+    border-radius: 7px;
+    background: linear-gradient(125deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.12) 26%, rgba(255, 255, 255, 0) 42%);
+    box-shadow: inset 0 0 0 1px rgba(30, 40, 60, 0.3), inset 0 0 10px rgba(170, 100, 20, 0.2);
+    pointer-events: none;
+  }
+  #needle { transform-box: view-box; transform-origin: 110px 112px; transform: rotate(-90deg); }
+  .readout { padding: 6px 12px 6px 18px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; text-align: left; gap: 3px; }
+  .pct { margin: 0; font-size: 34px; font-weight: 300; letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums; }
+  .pct small { font-size: 13px; font-weight: 400; letter-spacing: 0; color: var(--print-soft); }
+  .verdict { margin: 0; font-size: 12.5px; line-height: 1.25; color: var(--print-soft); }
+
+  /* the LCD, sunk into the body */
+  .bay { min-height: 0; background: none; box-shadow: none; }
+  .screen {
+    position: relative;
+    height: 100%;
+    border-radius: 5px;
+    overflow: hidden;
+    background: linear-gradient(176deg, var(--lcd-hi), var(--lcd-lo));
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+  .screen::before {              /* depth: the panel sits behind the bezel, lit at its edges */
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow:
+      inset 0 6px 12px rgba(0, 0, 0, 0.6),
+      inset 0 0 0 1px rgba(0, 0, 0, 0.55),
+      inset 5px 0 8px rgba(0, 0, 0, 0.22),
+      inset -5px 0 8px rgba(0, 0, 0, 0.22),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+    pointer-events: none;
+    z-index: 2;
+  }
+  .screen::after {               /* hard-edged reflection across the glass, and a fade where there is more below */
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background:
+      linear-gradient(rgba(41, 44, 49, 0), var(--lcd-lo)) 0 100% / 100% 30px no-repeat,
+      linear-gradient(242deg, rgba(255, 255, 255, 0.085) 0%, rgba(255, 255, 255, 0.04) 37.8%, rgba(255, 255, 255, 0) 38%);
+    pointer-events: none;
+    z-index: 3;
+  }
+  .scroll {
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    padding: 15px 16px 34px;
+    color: var(--lcd-ink);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    scrollbar-width: none;
+  }
+  .scroll::-webkit-scrollbar { display: none; }
+  .scroll:focus { outline: none; }
+  .scroll.enter > * { animation: rise 0.5s cubic-bezier(0.2, 0.8, 0.3, 1) both; }
+  .scroll.enter > *:nth-child(2) { animation-delay: 0.05s; }
+  .scroll.enter > *:nth-child(3) { animation-delay: 0.1s; }
+  .scroll.enter > *:nth-child(4) { animation-delay: 0.15s; }
+  .scroll.enter > *:nth-child(n+5) { animation-delay: 0.2s; }
+  @keyframes rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+  .g-label { margin: 0; font-size: 11px; font-weight: 400; color: var(--lcd-soft); font-variant-numeric: tabular-nums; }
+  .roast { margin: 0; font-size: 21px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.15; text-wrap: balance; }
+  .rx { display: flex; flex-direction: column; gap: 3px; }
+  .clean { margin: 0; font-family: var(--mono); font-size: 15px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.3; color: var(--name-lit); overflow-wrap: anywhere; }
+  .copy {
+    align-self: flex-start;
+    font-family: var(--ui);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--lcd-hi);
+    background: var(--lcd-ink);
+    border: 0;
+    border-radius: 999px;
+    padding: 8px 15px;
+    cursor: pointer;
+  }
+  .copy:active { opacity: 0.8; }
+  .history { display: flex; flex-direction: column; gap: 3px; }
+  .hist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .hist li {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 0 8px;
+    padding: 7px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.11);
+    color: var(--lcd-soft);
+    animation: scan 0.3s ease both;
+  }
+  @keyframes scan { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  .hist .idx { font-family: var(--mono); font-size: 11px; padding-top: 2px; font-variant-numeric: tabular-nums; }
+  .hist .fname { font-family: var(--mono); font-size: 12.5px; letter-spacing: -0.03em; line-height: 1.3; overflow-wrap: anywhere; color: var(--lcd-ink); opacity: 0.72; }
+  .hist .why { grid-column: 2; font-size: 12.5px; line-height: 1.3; }
+  .hist li.now .fname { color: var(--name-lit); opacity: 1; font-weight: 600; }
+  .hist li.now .idx { color: var(--lcd-ink); }
+  .motto { margin: 6px 0 0; font-size: 12px; color: var(--lcd-soft); text-wrap: balance; }
+  [hidden] { display: none !important; }
+
+  /* the orange key */
+  .feed {                       /* the key: the same tile as the rest, but it moves */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+    padding: 15px 18px 16px 16px;
+    text-align: left;
+    border: 0;
+    font-family: var(--ui);
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--name);
+    cursor: pointer;
+    background: linear-gradient(176deg, var(--tile-hi), var(--tile-lo));
+    transition: transform 0.06s, box-shadow 0.06s, background 0.06s;
+  }
+  .feed:active, .feed.pressed {
+    transform: translateY(1.5px);
+    background: linear-gradient(176deg, #eceef2, #e2e5ea);
+    box-shadow: inset 0 2px 3px rgba(40, 50, 70, 0.35), inset 0 0 0 1px rgba(40, 50, 70, 0.08), 0 0 0 rgba(0, 0, 0, 0);
+  }
+  .feed svg { flex: none; }
+
+  /* on load: show what moves */
+  .intro .paddle { animation: nudge 0.9s 0.5s cubic-bezier(0.3, 1.3, 0.5, 1); }
+  @keyframes nudge { 0%, 100% { transform: translateX(0); } 35% { transform: translateX(15px); } 60% { transform: translateX(0); } 78% { transform: translateX(6px); } }
+  .intro .feed { animation: tap 0.5s 1.5s ease; }
+  @keyframes tap { 0%, 100% { transform: none; filter: none; } 40% { transform: translateY(2px); filter: brightness(0.93); } }
+
+  .lever:focus-visible, .switch-label:focus-visible, .copy:focus-visible { outline: 2px solid var(--orange-lo); outline-offset: 3px; }
+  .feed:focus-visible { outline: 2px solid var(--name); outline-offset: -4px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .paddle, .feed { transition: none; }
+    .hist li, .scroll.enter > *, .intro .paddle, .intro .feed { animation: none; }
+  }
+</style>
+</head>
+<body>
+<a class="back" href="../designers/">← All tools</a>
+<main class="sheet">
+  <section class="machine" id="machine" aria-label="The Final Final machine">
+    <div class="tiles" id="tiles">
+      <div class="tile wide rail">
+        <div class="badge">
+          <h1>Final Final</h1>
+          <p class="label"><span class="led" id="led" aria-hidden="true"></span>File name unit FF-2</p>
+        </div>
+        <div class="switch-group">
+          <button class="switch-label on" id="label-clean" type="button">Clean</button>
+          <button class="lever" id="mode-switch" type="button" role="switch" aria-checked="false" aria-label="Decay mode"><span class="paddle"></span></button>
+          <button class="switch-label" id="label-decay" type="button">Decay</button>
+        </div>
+      </div>
+
+      <div class="tile wide entry">
+        <div class="entry-top">
+          <label class="label" for="intake" id="intake-cap">File in</label>
+          <p class="hint">Tap to type your own</p>
+        </div>
+        <textarea class="lcd-in" id="intake" rows="2" autocomplete="off" autocapitalize="off" spellcheck="false"></textarea>
+      </div>
+
+      <div class="tile meter-tile">
+        <div class="dial">
+          <svg viewBox="0 0 220 128" role="img" aria-label="Final-o-meter">
+            <defs>
+              <radialGradient id="face" cx="50%" cy="78%" r="80%">
+                <stop offset="0" stop-color="#fffdf6"/><stop offset="0.6" stop-color="#fff0d2"/><stop offset="1" stop-color="#f7d49c"/>
+              </radialGradient>
+            </defs>
+            <rect x="0" y="0" width="220" height="128" fill="url(#face)"/>
+            <path d="M26 112 A84 84 0 0 1 60.6 44" fill="none" stroke="#ee5f12" stroke-width="7"/>
+            <path d="M26 112 A84 84 0 0 1 194 112" fill="none" stroke="#23262b" stroke-width="1.8"/>
+            <g id="ticks" stroke="#23262b" stroke-width="1.8"></g>
+            <text x="110" y="78" text-anchor="middle" font-family="-apple-system, Hanken Grotesk, sans-serif" font-size="11.5" font-weight="500" letter-spacing="1.6" fill="#23262b">FINAL-O-METER</text>
+            <text x="26" y="126" text-anchor="middle" font-family="ui-monospace, JetBrains Mono, monospace" font-size="11" fill="#7a6a52">0</text>
+            <text x="194" y="126" text-anchor="middle" font-family="ui-monospace, JetBrains Mono, monospace" font-size="11" fill="#7a6a52">100</text>
+            <g id="needle">
+              <line x1="112.5" y1="113" x2="112.5" y2="38" stroke="rgba(120,70,0,0.2)" stroke-width="3.5" stroke-linecap="round"/>
+              <line x1="110" y1="112" x2="110" y2="36" stroke="#23262b" stroke-width="2.6" stroke-linecap="round"/>
+            </g>
+            <circle cx="110" cy="112" r="9" fill="#23262b"/>
+            <circle cx="108" cy="110" r="3" fill="#6d727c"/>
+          </svg>
+        </div>
+      </div>
+      <div class="tile readout" aria-live="polite">
+        <p class="pct" id="pct"></p>
+        <p class="verdict" id="verdict"></p>
+      </div>
+
+      <div class="tile wide bay" id="bay">
+        <div class="screen">
+          <div class="scroll" id="scroll" tabindex="0" aria-live="polite">
+            <p class="g-label only-decay" id="decay-round" hidden></p>
+            <p class="roast only-clean" id="roast"></p>
+            <p class="roast only-decay" id="decay-line" hidden></p>
+            <div class="rx only-clean">
+              <p class="g-label">Rename it to</p>
+              <p class="clean" id="clean"></p>
+            </div>
+            <button class="copy" id="btn-copy" type="button">Copy the clean name</button>
+            <div class="history">
+              <p class="g-label" id="hist-cap"></p>
+              <ol class="hist" id="hist"></ol>
+              <p class="motto">Name it once. Version it with numbers. Never say final.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="tile wide feed" id="btn-feed" type="button">
+        <span id="feed-label">Feed it another file</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+      </button>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+  var FIRST = "Logo_final_v2_FINAL_REAL_use this one copy (3).psd";
+  var BASES = ["logo", "homepage", "pitch-deck", "brand-guidelines", "app-icon", "wireframes", "moodboard",
+    "poster", "checkout-flow", "business-card", "onboarding", "menu", "Untitled-1", "banner", "case-study", "invite"];
+  var SUFFIXES = ["_final", "_FINAL", "_v2", "_v3", "_v7", " copy", " (2)", " (1)", "_new", "_NEW", "_latest",
+    "_REAL", "_use-this-one", "_edited", "_fixed", "_approved", "_draft", "_old", "_final_final",
+    "_client-feedback", "_FINALfinal", "_revised", "_updated", "_actual", " copy 2", "_v12", "_FIXED"];
+  var EXTS = [".fig", ".psd", ".ai", ".pdf", ".pptx", ".sketch", ".png", ".indd"];
+  var CATS = {
+    copy: ["copy", "copie", "duplicate", "dup", "backup", "bak"],
+    fresh: ["new", "newest", "latest", "updated", "update", "last"],
+    real: ["real", "actual", "really", "very", "fr", "pls", "please"],
+    pick: ["use", "this", "one", "usethis"],
+    edit: ["edit", "edited", "edits", "revised", "rev", "revision", "fix", "fixed", "changes", "feedback", "tweak", "tweaks", "client"],
+    approved: ["approved", "signedoff", "ok", "done", "finished", "complete", "completed"],
+    draft: ["draft", "wip", "temp", "tmp", "rough"],
+    old: ["old", "older", "original", "orig"],
+    untitled: ["untitled", "asdf"],
+    misc: ["version", "ver"]
+  };
+  var WORD = {};
+  Object.keys(CATS).forEach(function (c) { CATS[c].forEach(function (w) { WORD[w] = c; }); });
+  var NOTES = {
+    final: ["Declared final.", "Declared final. Again.", "Final, for real this time.", "Final. Nobody believes it."],
+    version: ["A new version.", "Another version.", "And another."],
+    copy: ["Duplicated, just in case.", "Duplicated again."],
+    paren: ["Downloaded again.", "Downloaded once more."],
+    loose: ["Numbered, for safety.", "Numbered again."],
+    fresh: ["Marked new.", "Now this one is the latest.", "Updated once more."],
+    real: ["The real one, apparently.", "No, this is the real one."],
+    pick: ["Someone sent the wrong file."],
+    edit: ["Feedback arrived.", "More feedback.", "Still more feedback."],
+    approved: ["Approved. Briefly."],
+    draft: ["Back to draft."],
+    old: ["Kept the old one around."]
+  };
+
+  var STAGES = [
+    { s: "", cap: "Day one. Full of hope." },
+    { s: "_v2", cap: "A few small tweaks." },
+    { s: "_v2_final", cap: "Approved. Probably." },
+    { s: "_v2_final_final", cap: "One tiny change from the client." },
+    { s: "_v2_final_FINAL", cap: "This time we mean it." },
+    { s: "_v2_final_FINAL_use-this-one", cap: "Someone sent the wrong file." },
+    { s: "_v2_final_FINAL_use-this-one (1)", cap: "Downloaded again, just to be safe." },
+    { s: "_v2_final_FINAL_use-this-one (1)_REAL", cap: "Trust has left the building." },
+    { s: "_v2_final_FINAL_use-this-one (1)_REAL_approved", cap: "The CEO’s nephew had thoughts." },
+    { s: "", cap: "“Can we go back to the first one?”", end: true }
+  ];
+  var LAST = STAGES.length - 1;
+  var REDUCED = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var $ = function (id) { return document.getElementById(id); };
+  var state = { mode: "rehab", messy: FIRST, decayName: "homepage.fig", decayIdx: 0 };
+
+  function rnd(a) { return a[Math.floor(Math.random() * a.length)]; }
+  function genMessy() {
+    var base = rnd(BASES);
+    if (Math.random() < 0.3) base = base.charAt(0).toUpperCase() + base.slice(1);
+    if (Math.random() < 0.1) return base + rnd(EXTS);
+    var n = 2 + Math.floor(Math.random() * 3), used = {}, out = base;
+    while (n > 0) {
+      var s = rnd(SUFFIXES);
+      if (used[s]) continue;
+      used[s] = true; out += s; n -= 1;
+    }
+    return out + rnd(EXTS);
+  }
+  function genFresh() {
+    var b = rnd(BASES);
+    if (b === "Untitled-1") b = "logo";
+    return b + rnd(EXTS);
+  }
+  function splitExt(name) {
+    var t = name.trim();
+    var m = /\.([A-Za-z0-9]{1,6})$/.exec(t);
+    if (m && m.index > 0) return { base: t.slice(0, m.index), ext: "." + m[1].toLowerCase() };
+    return { base: t, ext: "" };
+  }
+  function pad2(n) { return n < 10 ? "0" + n : String(n); }
+  function today() {
+    var d = new Date();
+    return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate());
+  }
+
+  function analyze(name) {
+    var parts = splitExt(name);
+    var base = parts.base;
+    var r = {
+      ext: parts.ext, finals: 0, maxVersion: 0, versionMarkers: 0, copies: 0, loose: 0, keep: [],
+      c: { copy: 0, fresh: 0, real: 0, pick: 0, edit: 0, approved: 0, draft: 0, old: 0, untitled: 0, misc: 0 }
+    };
+    base = base.replace(/\((\d+)\)/g, function () { r.copies += 1; return " "; });
+    var tokens = base.replace(/([a-z])([A-Z])/g, "$1 $2").split(/[^A-Za-z0-9]+/).filter(Boolean);
+    tokens.forEach(function (t) {
+      var l = t.toLowerCase();
+      var f = l.match(/final/g);
+      if (f) { r.finals += f.length; l = l.replace(/final/g, ""); if (!l) return; }
+      var v = /^v(\d{1,3})$/.exec(l);
+      if (v) { r.versionMarkers += 1; r.maxVersion = Math.max(r.maxVersion, parseInt(v[1], 10)); return; }
+      if (/^\d+$/.test(l)) { if (l.length <= 2) r.loose += 1; return; }
+      var cat = WORD[l];
+      if (cat) { r.c[cat] += 1; return; }
+      r.keep.push(l);
+    });
+    r.copies += r.c.copy;
+    r.junk = r.finals + r.copies + r.c.fresh + r.c.real + (r.c.pick ? 1 : 0) + r.c.edit + r.c.approved +
+      r.c.draft + r.c.old + (r.versionMarkers ? 1 : 0) + r.loose;
+    r.pct = r.junk === 0 ? 100 : Math.max(2, Math.round(100 / (1 + r.junk * 1.2)));
+    return r;
+  }
+  function classify(tok) {
+    if (/^\(\d+\)$/.test(tok)) return "paren";
+    var l = tok.toLowerCase();
+    if (/final/.test(l)) return "final";
+    if (/^v\d{1,3}$/.test(l)) return "version";
+    if (/^\d{1,2}$/.test(l)) return "loose";
+    return WORD[l] || null;
+  }
+  /* Rebuild the versions this file went through, from the leftovers in its name. */
+  function buildHistory(name) {
+    var p = splitExt(name);
+    var pieces = p.base.match(/[_\-\s.]*(?:\(\d+\)|[A-Za-z0-9]+)/g) || [];
+    var tok = function (s) { return s.replace(/^[_\-\s.]+/, ""); };
+    if (!pieces.length) return [{ name: name.trim(), note: "Day one. Full of hope." }];
+    var i = 0, cur = "";
+    while (i < pieces.length && classify(tok(pieces[i])) === null) { cur += pieces[i]; i += 1; }
+    var first = "Day one. Full of hope.";
+    if (cur === "") {
+      cur = pieces[0]; i = 1; first = "Day one. Never got a real name.";
+      while (i < pieces.length && classify(tok(pieces[i])) === "loose") { cur += pieces[i]; i += 1; }
+    }
+    var hist = [{ name: cur + p.ext, note: first }];
+    var pending = "", lead = null, seen = {};
+    for (var j = i; j < pieces.length; j++) {
+      var cat = classify(tok(pieces[j]));
+      var next = j + 1 < pieces.length ? classify(tok(pieces[j + 1])) : null;
+      pending += pieces[j];
+      if (cat === null || cat === "misc" || cat === "untitled") continue;
+      if (cat === "pick" && next === "pick") { lead = lead || cat; continue; }
+      if (cat === "copy" && (next === "loose" || next === "paren")) { lead = lead || cat; continue; }
+      cur += pending; pending = "";
+      var key = lead || cat; lead = null;
+      var list = NOTES[key] || ["Renamed."];
+      seen[key] = (seen[key] || 0) + 1;
+      hist.push({ name: cur + p.ext, note: list[Math.min(seen[key] - 1, list.length - 1)] });
+    }
+    if (pending) hist[hist.length - 1].name = cur + pending + p.ext;
+    return hist;
+  }
+  function roastLine(r) {
+    if (r.finals >= 3) return "This file has been final " + r.finals + " times.";
+    if (r.finals === 2) return "Final twice. The first one was a lie.";
+    if (r.finals === 1) return "It says final. We both know it isn’t.";
+    if (r.junk > 0) return "No “final” yet. Give it a week.";
+    return "Suspiciously calm. Did a developer name this?";
+  }
+  function verdictLine(p) {
+    if (p === 100) return "Actually final. Frame it.";
+    if (p >= 40) return "One more email should do it.";
+    if (p >= 15) return "Not even close.";
+    return "This file will outlive us all.";
+  }
+  function cleanName(r, versions) {
+    var what = r.keep.length ? r.keep.join("-") : "name-me-please";
+    return what + "_" + today() + "_v" + pad2(Math.min(99, Math.max(r.maxVersion, versions, 1))) + r.ext;
+  }
+
+  /* meter */
+  (function ticks() {
+    var g = $("ticks"), NS = "http://www.w3.org/2000/svg";
+    for (var i = 0; i <= 10; i++) {
+      var a = Math.PI - (i / 10) * Math.PI, r1 = 84, r2 = i % 5 === 0 ? 70 : 76;
+      var ln = document.createElementNS(NS, "line");
+      ln.setAttribute("x1", (110 + r1 * Math.cos(a)).toFixed(1));
+      ln.setAttribute("y1", (112 - r1 * Math.sin(a)).toFixed(1));
+      ln.setAttribute("x2", (110 + r2 * Math.cos(a)).toFixed(1));
+      ln.setAttribute("y2", (112 - r2 * Math.sin(a)).toFixed(1));
+      g.appendChild(ln);
+    }
+  })();
+  var angle = -90, needleAnim = null;
+  function swing(to, bounce) {
+    var n = $("needle");
+    var from = angle;
+    angle = to;
+    n.style.transform = "rotate(" + to + "deg)";
+    if (REDUCED || !bounce || !n.animate) return;
+    var d = to - from;
+    var amp = (d < 0 ? -1 : 1) * Math.max(Math.abs(d), 14);   /* always a little wobble, even on a small change */
+    var k = function (deg, at) { return { transform: "rotate(" + Math.max(-96, Math.min(96, deg)) + "deg)", offset: at }; };
+    if (needleAnim) needleAnim.cancel();
+    needleAnim = n.animate([
+      k(from, 0), k(to + amp * 0.2, 0.3), k(to - amp * 0.11, 0.5), k(to + amp * 0.06, 0.67),
+      k(to - amp * 0.03, 0.82), k(to + amp * 0.012, 0.92), k(to, 1)
+    ], { duration: 1250, easing: "ease-out" });
+  }
+  function setMeter(pct, verdict, bounce) {
+    swing(-90 + (pct == null ? 0 : pct) * 1.8, bounce);
+    var el = $("pct");
+    el.textContent = "";
+    if (pct != null) {
+      el.appendChild(document.createTextNode(pct + "% "));
+      var s = document.createElement("small");
+      s.textContent = "final";
+      el.appendChild(s);
+    }
+    $("verdict").textContent = verdict || "";
+  }
+
+  var copyPayload = "";
+  function each(sel, fn) { Array.prototype.forEach.call(document.querySelectorAll(sel), fn); }
+
+  /* the LCD: results rise in, then the screen peeks down and back to show it scrolls */
+  var sc = $("scroll"), hintRun = 0;
+  function glide(to, ms, run, done) {
+    var from = sc.scrollTop, t0 = null;
+    function step(t) {
+      if (run !== hintRun) return;
+      if (t0 === null) t0 = t;
+      var k = Math.min(1, (t - t0) / ms);
+      var e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+      sc.scrollTop = from + (to - from) * e;
+      if (k < 1) requestAnimationFrame(step); else if (done) done();
+    }
+    requestAnimationFrame(step);
+  }
+  function arrive() {
+    hintRun += 1;
+    var run = hintRun;
+    sc.scrollTop = 0;
+    if (REDUCED) return;
+    sc.classList.remove("enter");
+    void sc.offsetWidth;
+    sc.classList.add("enter");
+    setTimeout(function () {
+      if (run !== hintRun || sc.scrollHeight <= sc.clientHeight + 8) return;
+      var peek = Math.min(64, sc.scrollHeight - sc.clientHeight);
+      glide(peek, 520, run, function () { setTimeout(function () { glide(0, 520, run); }, 160); });
+    }, 620);
+  }
+  ["pointerdown", "wheel", "touchstart"].forEach(function (ev) {
+    sc.addEventListener(ev, function () { hintRun += 1; }, { passive: true });
+  });
+  function decayNames() {
+    var p = splitExt(state.decayName || "untitled");
+    var base = p.base || "untitled";
+    var out = [];
+    for (var i = 0; i <= state.decayIdx; i++) out.push(base + STAGES[i].s + p.ext);
+    return out;
+  }
+  /* rows: newest first */
+  function drawHistory(rows, stagger) {
+    var ol = $("hist");
+    ol.textContent = "";
+    for (var i = rows.length - 1; i >= 0; i--) {
+      var li = document.createElement("li");
+      if (i === rows.length - 1) li.className = "now";
+      if (stagger) li.style.animationDelay = Math.min((rows.length - 1 - i) * 70, 560) + "ms";
+      else li.style.animation = "none";
+      [["idx", pad2(i + 1)], ["fname", rows[i].name], ["why", rows[i].note]].forEach(function (pair) {
+        var s = document.createElement("span");
+        s.className = pair[0];
+        s.textContent = pair[1];
+        li.appendChild(s);
+      });
+      ol.appendChild(li);
+    }
+  }
+
+  function renderRehab(fresh) {
+    var name = state.messy.trim();
+    if (!name) {
+      $("roast").textContent = "Feed the machine a file name.";
+      $("clean").textContent = "what-it-is_" + today() + "_v01.ext";
+      $("hist-cap").textContent = "History scan";
+      $("hist").textContent = "";
+      setMeter(null, "", fresh);
+      copyPayload = "";
+      return;
+    }
+    var r = analyze(name);
+    var hist = buildHistory(name);
+    $("roast").textContent = roastLine(r);
+    setMeter(r.pct, verdictLine(r.pct), fresh);
+    copyPayload = cleanName(r, hist.length);
+    $("clean").textContent = copyPayload;
+    $("hist-cap").textContent = "History scan · " + hist.length + (hist.length === 1 ? " version found" : " versions found");
+    drawHistory(hist, fresh);
+  }
+  function renderDecay(fresh) {
+    var names = decayNames();
+    var i = state.decayIdx, atEnd = i >= LAST;
+    $("decay-round").textContent = i === 0 ? "Day 1" : "Round " + i + " of " + LAST;
+    $("decay-line").textContent = STAGES[i].cap;
+    var r = analyze(names[names.length - 1]);
+    setMeter(r.pct, atEnd ? "Back where it started." : verdictLine(r.pct), fresh);
+    copyPayload = names.join("\n");
+    $("hist-cap").textContent = atEnd ? "History · the first version wins" : "History · " + names.length + (names.length === 1 ? " version" : " versions");
+    drawHistory(names.map(function (n, k) { return { name: n, note: STAGES[k].cap }; }), false);
+    if (fresh && !REDUCED) {
+      var top = $("hist").firstChild;
+      if (top) { top.style.animation = ""; }
+    }
+  }
+  function render(opts) {
+    opts = opts || {};
+    var rehab = state.mode === "rehab";
+    $("mode-switch").setAttribute("aria-checked", rehab ? "false" : "true");
+    $("label-clean").classList.toggle("on", rehab);
+    $("label-decay").classList.toggle("on", !rehab);
+    each(".only-clean", function (n) { n.hidden = !rehab; });
+    each(".only-decay", function (n) { n.hidden = rehab; });
+    $("intake-cap").textContent = rehab ? "File in" : (state.decayIdx === 0 ? "Fresh file in" : "File, round " + state.decayIdx);
+    if (!opts.typing) {
+      var names = rehab ? null : decayNames();
+      var el = $("intake");
+      el.value = rehab ? state.messy : names[names.length - 1];
+      el.scrollTop = el.scrollHeight;
+    }
+    $("btn-copy").textContent = rehab ? "Copy the clean name" : "Copy the life cycle";
+    $("feed-label").textContent = rehab ? "Feed it another file"
+      : (state.decayIdx >= LAST ? "Start over with a new file" : "Add a round of feedback");
+    if (rehab) renderRehab(opts.fresh); else renderDecay(opts.fresh);
+    if (opts.fresh) arrive();
+  }
+  var ledTimer = null;
+  function blink() {
+    $("led").classList.add("busy");
+    clearTimeout(ledTimer);
+    ledTimer = setTimeout(function () { $("led").classList.remove("busy"); }, 700);
+  }
+
+  function setMode(m) {
+    if (state.mode === m) return;
+    state.mode = m;
+    render({ fresh: true }); blink();
+  }
+  $("mode-switch").addEventListener("click", function () { setMode(state.mode === "rehab" ? "decay" : "rehab"); });
+  $("label-clean").addEventListener("click", function () { setMode("rehab"); });
+  $("label-decay").addEventListener("click", function () { setMode("decay"); });
+
+  $("intake").addEventListener("input", function (e) {
+    var v = e.target.value.replace(/[\r\n]+/g, " ");
+    if (v !== e.target.value) e.target.value = v;
+    if (state.mode === "rehab") state.messy = v;
+    else { state.decayName = v; state.decayIdx = 0; }
+    render({ typing: true });
+  });
+  $("btn-feed").addEventListener("click", function () {
+    if (state.mode === "rehab") {
+      var next = genMessy();
+      if (next === state.messy) next = genMessy();
+      state.messy = next;
+    } else if (state.decayIdx >= LAST) {
+      state.decayName = genFresh();
+      state.decayIdx = 0;
+    } else {
+      state.decayIdx += 1;
+    }
+    render({ fresh: true }); blink();
+  });
+  $("btn-copy").addEventListener("click", function () {
+    if (!copyPayload) return;
+    var btn = $("btn-copy");
+    var rest = state.mode === "rehab" ? "Copy the clean name" : "Copy the life cycle";
+    var flash = function (msg) {
+      btn.textContent = msg;
+      clearTimeout(btn._t);
+      btn._t = setTimeout(function () { btn.textContent = rest; }, 1600);
+    };
+    try {
+      navigator.clipboard.writeText(copyPayload).then(function () { flash("Copied"); }, function () { flash("Could not copy"); });
+    } catch (e) { flash("Could not copy"); }
+  });
+
+  function start(saved) {
+    if (saved && typeof saved.messy === "string") {
+      state.mode = saved.mode === "decay" ? "decay" : "rehab";
+      state.messy = saved.messy;
+      if (typeof saved.decayName === "string") state.decayName = saved.decayName;
+      state.decayIdx = Math.min(LAST, Math.max(0, saved.decayIdx || 0));
+    }
+    render({ fresh: true });
+    if (state.mode === "rehab" && !REDUCED) {
+      var m = $("machine");
+      m.classList.add("intro");
+      setTimeout(function () { m.classList.remove("intro"); }, 2300);
+    }
+  }
+  var hot = window.claude && window.claude.hot;
+  if (hot && hot.snapshot) hot.snapshot(function () {
+    return { mode: state.mode, messy: state.messy, decayName: state.decayName, decayIdx: state.decayIdx };
+  });
+  if (hot && hot.ready) hot.ready(start); else start((hot && hot.data) || {});
+})();
+</script>
+</body>
+</html>

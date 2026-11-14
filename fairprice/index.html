@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>FairPrice · Nino Studio</title>
+<meta name="description" content="Build a price list for every size you make, with a range, a commission column, and a way to test a raise.">
+<meta property="og:title" content="FairPrice · Nino Studio">
+<meta property="og:description" content="Build a price list for every size you make, with a range, a commission column, and a way to test a raise.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tools.nino.studio/fairprice/">
+<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abel&family=Mulish:wght@400;600&display=swap">
+<style>
+/* Layout: two stacked cards. One forest-green family: deep page, light sage cards (the second a little deeper), pale green boxes inside. */
+:root{
+  --bg:#2E4A3C; --on-bg:#EEF3EE; --on-bg-2:#B7CBBC; --bg-box:#3B5A4A; --bg-line:#58786A;
+  --card1:#DCE7DE; --in1:#EFF5F0; --card2:#C9DACD; --in2:#E5EEE7; --in2-deep:#D3E2D7;
+  --ink:#1D3226; --text:#32483B; --muted:#4A6152; --line:#B6C9BB; --line-strong:#88A592;
+  --chip-on:#2E4A3C; --chip-on-text:#EEF3EE; --accent:#2D6648; --focus-card:#1D3226; --focus-bg:#EEF3EE;
+  --heading:"Abel","Helvetica Neue",Arial,sans-serif; --body:"Mulish","Helvetica Neue",Arial,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#111A15; --on-bg:#E6EFE8; --on-bg-2:#A9BFB0; --bg-box:#1C2B23; --bg-line:#34493D;
+  --card1:#1E2D25; --in1:#2A3D33; --card2:#26382E; --in2:#314639; --in2-deep:#273A2F;
+  --ink:#E6EFE8; --text:#BFD0C4; --muted:#92AA9A; --line:#41584A; --line-strong:#4D6857;
+  --chip-on:#A8C9B3; --chip-on-text:#12201A; --accent:#8ED3A9; --focus-card:#E6EFE8; --focus-bg:#E6EFE8;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111A15; --on-bg:#E6EFE8; --on-bg-2:#A9BFB0; --bg-box:#1C2B23; --bg-line:#34493D;
+  --card1:#1E2D25; --in1:#2A3D33; --card2:#26382E; --in2:#314639; --in2-deep:#273A2F;
+  --ink:#E6EFE8; --text:#BFD0C4; --muted:#92AA9A; --line:#41584A; --line-strong:#4D6857;
+  --chip-on:#A8C9B3; --chip-on-text:#12201A; --accent:#8ED3A9; --focus-card:#E6EFE8; --focus-bg:#E6EFE8;
+  color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--on-bg-2);font-family:var(--body);font-size:16px;line-height:1.6;margin:0;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 72px}
+p{margin:0}
+.wrap{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px}
+h1{font-family:var(--heading);font-weight:400;font-size:clamp(2.4rem,8vw,3rem);line-height:1;margin:0;color:var(--on-bg);letter-spacing:.01em}
+.sub{margin-top:8px}
+h2{font-family:var(--heading);font-weight:400;font-size:1.6rem;line-height:1.15;margin:0;color:var(--ink);text-wrap:balance}
+.eyebrow{font-size:.74rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+.units{display:flex;border:1px solid var(--bg-line);background:var(--bg-box);border-radius:4px;padding:3px;gap:2px}
+.units button{font:inherit;font-size:.88rem;border:0;background:transparent;color:var(--on-bg);padding:5px 14px;border-radius:2px;cursor:pointer}
+.units button[aria-pressed="true"]{background:var(--on-bg);color:var(--bg)}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--focus-bg);outline-offset:2px}
+.card button:focus-visible,.card input:focus-visible{outline-color:var(--focus-card)}
+.card{border-radius:6px;padding:28px;display:flex;flex-direction:column;gap:22px;color:var(--text)}
+.blue{--s:var(--in1);background:var(--card1)}
+.peach{--s:var(--in2);background:var(--card2)}
+.head{display:flex;gap:14px;align-items:flex-start}
+.step{flex:none;width:30px;height:30px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:var(--heading);font-size:1.05rem;background:var(--s);color:var(--ink)}
+.num{font-family:var(--heading);font-weight:400;font-variant-numeric:lining-nums tabular-nums;color:var(--ink)}
+.group{display:flex;flex-direction:column;gap:8px}
+.label{font-size:.9rem;color:var(--text)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;font-size:.9rem;border:1px solid transparent;background:var(--s);color:var(--text);padding:6px 13px;border-radius:4px;cursor:pointer}
+.chip:hover{border-color:var(--line-strong)}
+.chip[aria-pressed="true"]{background:var(--chip-on);color:var(--chip-on-text)}
+.ex{font-size:.82rem;color:var(--muted)}
+.rate{background:var(--s);border-radius:4px;padding:20px;display:flex;flex-direction:column;gap:6px}
+.rate .eyebrow{color:var(--muted)}
+.rate .big{font-size:clamp(2.2rem,8vw,2.8rem);line-height:1.05}
+.rate .big small{font-family:var(--body);font-size:.95rem;color:var(--text)}
+.rate p.note{font-size:.9rem;color:var(--text)}
+.tools{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end}
+.field{display:flex;flex-direction:column;gap:6px;font-size:.88rem;color:var(--text)}
+.field .in{display:flex;align-items:center;gap:6px}
+input{font:inherit;font-size:1.05rem;color:var(--ink);background:var(--s);border:1px solid transparent;border-radius:4px;padding:8px 10px;font-variant-numeric:tabular-nums;min-width:0}
+input:hover{border-color:var(--line-strong)}
+.pct{width:72px}
+.dim{width:100px}
+.addrow{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end}
+.btn{font:inherit;font-size:.9rem;border:1px solid var(--line-strong);background:transparent;color:var(--ink);padding:8px 14px;border-radius:4px;cursor:pointer}
+.btn:hover{background:var(--s)}
+.btn.solid{background:var(--chip-on);color:var(--chip-on-text);border-color:var(--chip-on)}
+.btn.solid:hover{background:var(--chip-on);opacity:.9}
+.list{background:var(--s);border-radius:4px;padding:6px 16px 12px;color:var(--text)}
+.cols,.row{display:grid;grid-template-columns:minmax(0,1fr) 104px 84px 32px;gap:8px;align-items:center}
+.cols{padding:12px 0 8px;border-bottom:1px solid var(--line);font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.cols span:nth-child(2),.cols span:nth-child(3){text-align:right}
+.tier{padding:18px 0 6px;font-size:.74rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);display:flex;gap:8px;align-items:baseline}
+.tier em{font-style:normal;color:var(--muted);letter-spacing:.04em;text-transform:none;font-weight:400;font-size:.82rem}
+.row{padding:6px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.sz{display:flex;flex-direction:column;line-height:1.25;min-width:0}
+.sz b{font-weight:600;color:var(--ink);font-size:.98rem;white-space:nowrap}
+.sz small{color:var(--muted);font-size:.78rem}
+.pre{position:relative}
+.pre i{position:absolute;left:9px;top:50%;transform:translateY(-50%);font-style:normal;color:var(--muted);pointer-events:none}
+.pre input{width:100%;padding:7px 8px 7px 20px;text-align:right;background:var(--in2-deep);font-size:1rem}
+.pre input.edited{border-bottom:2px solid var(--accent);border-radius:4px 4px 0 0}
+.comm{text-align:right;font-size:1.15rem}
+.was{color:var(--accent);font-weight:600}
+.rm{width:32px;height:32px;border:0;background:transparent;color:var(--muted);font-size:1.2rem;line-height:1;border-radius:4px;cursor:pointer}
+.rm:hover{background:var(--in2-deep);color:var(--ink)}
+.actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.hint{font-size:.88rem;color:var(--text)}
+.how{display:flex;flex-direction:column;gap:14px;padding-top:12px}
+.how h2{font-size:1.35rem;color:var(--on-bg)}
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:.88rem}
+.formula span{background:var(--bg-box);color:var(--on-bg);border-radius:3px;padding:2px 10px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.box{border-radius:4px;padding:16px;display:flex;flex-direction:column;gap:6px;font-size:.92rem;background:var(--bg-box);color:var(--on-bg-2)}
+.box .eyebrow{color:var(--on-bg)}
+.fine{font-size:.84rem;color:var(--on-bg-2)}
+.fine a{color:var(--on-bg);text-underline-offset:3px}
+.foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 24px;margin-top:8px;padding-top:24px;border-top:1px solid var(--bg-line);font-size:.88rem;color:var(--on-bg-2)}
+.logo{display:block;border-radius:50%;box-shadow:0 0 0 1px var(--bg-line);transition:transform 120ms ease}
+.logo:hover{transform:translateY(-2px)}
+.logo svg{display:block;width:44px;height:44px}
+@media (prefers-reduced-motion:reduce){.logo{transition:none}}
+@media (max-width:520px){
+  .card{padding:20px}
+  .two{grid-template-columns:1fr}
+  .cols,.row{grid-template-columns:minmax(0,1fr) 108px 66px 26px;gap:4px}
+  .pre input{padding-left:16px;padding-right:6px}
+  .comm{font-size:1.05rem}
+  .list{padding:4px 12px 10px}
+}
+.back{align-self:flex-start;font-family:var(--body);font-size:.92rem;color:var(--on-bg-2);text-decoration:none}
+.back:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <a class="back" href="../">← All tools</a>
+  <header>
+    <div>
+      <h1>FairPrice</h1>
+      <p class="sub">Build a price list for every size you make.</p>
+    </div>
+    <div class="units" role="group" aria-label="Units">
+      <button type="button" id="uIn" aria-pressed="true">inches</button>
+      <button type="button" id="uCm" aria-pressed="false">cm</button>
+    </div>
+  </header>
+
+  <section class="card blue" aria-labelledby="t1">
+    <div class="head"><span class="step">1</span><div><h2 id="t1">Find your rate</h2><p class="label">Tell us about you and your work. We'll set a starting rate from what artists like you usually charge.</p></div></div>
+    <div id="formulaBox" style="display:contents">
+      <div id="filters" style="display:flex;flex-direction:column;gap:18px"></div>
+      <div class="rate" aria-live="polite">
+        <p class="eyebrow">Your starting rate</p>
+        <p class="big num"><span id="baseRate"></span> <small id="baseUnit"></small></p>
+        <p class="note" id="baseNote"></p>
+      </div>
+      <div class="group" role="group" aria-labelledby="xLbl">
+        <p class="label" id="xLbl">Already know one price? Pin the list to it.</p>
+        <div class="addrow">
+          <input id="xw" class="dim" type="number" inputmode="decimal" min="1" step="any" placeholder="Width" aria-label="Width of your known piece">
+          <span aria-hidden="true">×</span>
+          <input id="xh" class="dim" type="number" inputmode="decimal" min="1" step="any" placeholder="Height" aria-label="Height of your known piece">
+          <input id="xp" class="dim" type="number" inputmode="numeric" min="1" step="any" placeholder="Price $" aria-label="Your retail price for that size">
+          <button type="button" class="btn" id="xApply">Pin</button>
+          <button type="button" class="btn" id="xClear" hidden>Clear</button>
+        </div>
+        <p class="ex" id="xNote"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="card peach" aria-labelledby="t2">
+    <div class="head"><span class="step">2</span><div><h2 id="t2">Your <span id="yr"></span> price list</h2><p class="label">Smallest to largest, grouped like your shop's size filter. Click any retail price to set your own, or test a raise on the bigger pieces.</p></div></div>
+
+    <div class="tools">
+      <label class="field" for="comm"><span>Commission work: add to retail</span>
+        <span class="in"><input id="comm" class="pct" type="number" inputmode="decimal" min="0" max="200" step="1" value="20"><span aria-hidden="true">%</span></span>
+      </label>
+      <div class="field" id="bandBox"><span id="bandLbl">Where in the range</span>
+        <div class="chips" role="group" aria-labelledby="bandLbl"><button type="button" class="chip" data-band="0">Low</button><button type="button" class="chip" data-band="1">Middle</button><button type="button" class="chip" data-band="2">High</button></div>
+      </div>
+      <label class="field" for="raise"><span id="raiseLbl">Test a raise</span>
+        <span class="in"><input id="raise" class="pct" type="number" inputmode="decimal" min="0" max="100" step="1" value="0"><span aria-hidden="true">%</span></span>
+      </label>
+      <div class="field"><span id="addLabel">Add a size</span>
+        <div class="addrow" role="group" aria-labelledby="addLabel">
+          <input id="aw" class="dim" type="number" inputmode="decimal" min="1" step="any" placeholder="Width" aria-label="Width">
+          <span aria-hidden="true">×</span>
+          <input id="ah" class="dim" type="number" inputmode="decimal" min="1" step="any" placeholder="Height" aria-label="Height">
+          <button type="button" class="btn" id="add">Add</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="list" role="table" aria-label="Price list by size">
+      <div class="cols" role="row"><span role="columnheader">Size</span><span role="columnheader">Retail</span><span role="columnheader" id="commHead">Commission</span><span></span></div>
+      <div id="rows"></div>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn solid" id="copy">Copy price list</button>
+      <button type="button" class="btn" id="resetPrices" hidden>Reset my edited prices</button>
+      <button type="button" class="btn" id="resetSizes">Reset sizes</button>
+      <span class="hint" id="copyNote" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <section class="how" aria-labelledby="howTitle">
+    <h2 id="howTitle">How we get these numbers</h2>
+    <p class="formula"><span>Experience</span>×<span>Sales</span>×<span>Location</span>×<span>Medium</span>= starting rate</p>
+    <div class="two">
+      <div class="box">
+        <p class="eyebrow">From art pricing guides</p>
+        <p>Pricing by square inch, with a lower rate as pieces get bigger. Years selling and sales history raise the rate, but not without limit.</p>
+      </div>
+      <div class="box">
+        <p class="eyebrow">Our estimate</p>
+        <p>The rate falls quickly from small to mid-size pieces, then levels off for large work. That shape comes from one working artist's real price list and is being checked against more. Treat the result as a range and compare with a few similar artists near you.</p>
+      </div>
+    </div>
+    <p class="fine">Sources: <a href="https://www.artworkarchive.com/blog/how-to-price-consistently-for-art-sales-success" target="_blank" rel="noopener">Artwork Archive</a>, <a href="https://www.ugallery.com/blogs/selling-art-online/how-to-price-your-artwork" target="_blank" rel="noopener">UGallery</a>. A starting point, not live sales data. Reviewed November 2026.</p>
+  </section>
+
+  <footer class="foot">
+    <p>Made by Nino Yuniardi at Nino Studio in Seattle.</p>
+    <a class="logo" href="https://nino.studio" target="_blank" rel="noopener noreferrer" title="Explore Nino Studio">
+      <svg viewBox="0 0 340 340" role="img" aria-label="Nino Studio, nino.studio">
+        <circle cx="170" cy="170" r="170" fill="#ebe9e3"/>
+        <g fill="none" stroke="#252525" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M114 146V84A17 17 0 0 1 148 84V146"/>
+          <path d="M204 70Q219 70 219 86V146"/>
+          <path d="M114 269V207A17 17 0 0 1 148 207V269"/>
+          <rect x="188" y="191" width="43" height="78" rx="21.5"/>
+        </g>
+      </svg>
+    </a>
+  </footer>
+</div>
+
+<script>
+(function(){
+var $=function(id){return document.getElementById(id)};
+var CM=2.54, SQ=CM*CM, REF=320, K0=1.07, EXPO=0.6, BANDS=[['Low',.8],['Middle',1],['High',1.2]], KEY='fairprice-v6', RAISE_FROM=576, MAXSIZES=40;
+var FILTERS=[
+  {key:'loc',label:'Where you sell',def:1,opts:[
+    ['Major art hub',1.35,'Like New York, Los Angeles, London or Paris'],
+    ['Big city',1.15,'Like Seattle, Chicago, Berlin, Toronto or Sydney'],
+    ['Mid-size city',1,'Like Portland, Edinburgh or a college town'],
+    ['Small town',.8,'A small town or rural area'],
+    ['Mostly online',.95,'Most of your sales happen online']]},
+  {key:'medium',label:'Medium',def:0,opts:[['Oil or acrylic',1],['Mixed media',.9],['Watercolor or paper',.75],['Drawing',.6]]},
+  {key:'years',label:'Years selling art',def:2,opts:[['Under 2',1.5],['2–5',2.5],['5–10',4],['10+',6]]},
+  {key:'sold',label:'Pieces sold so far',def:1,opts:[['0–10',.8],['10–50',1],['50–150',1.25],['150+',1.5]]}
+];
+var TIERS=[['Small','up to 12 in',12],['Medium','13–36 in',36],['Large','37–54 in',54],['Extra large','55 in and up',1e9]];
+var DEFAULT_SIZES=[[4,4],[6,8],[8,10],[12,12],[16,20],[18,24],[24,30],[36,36],[36,48],[48,48],[60,48],[72,48]];
+function defSizes(){return DEFAULT_SIZES.map(function(x){return x.slice()})}
+var st={unit:'in',pick:{},mode:'formula',S:{formula:defSizes()},O:{formula:{}},comm:20,raise:0,band:1,anchor:null};
+FILTERS.forEach(function(f){st.pick[f.key]=f.def});
+try{var saved=JSON.parse(localStorage.getItem(KEY)||'null');
+  if(saved){ if(saved.unit)st.unit=saved.unit; 
+    if(saved.pick)FILTERS.forEach(function(f){var v=saved.pick[f.key]; if(f.opts[v])st.pick[f.key]=v});
+    ['formula'].forEach(function(m){
+      if(saved.S&&Array.isArray(saved.S[m])&&saved.S[m].length)st.S[m]=saved.S[m].filter(function(x){return x[0]>0&&x[1]>0});
+      if(saved.O&&saved.O[m]&&typeof saved.O[m]==='object')st.O[m]=saved.O[m]});
+    if(typeof saved.comm==='number')st.comm=saved.comm; if(typeof saved.raise==='number')st.raise=saved.raise; if(saved.band===0||saved.band===1||saved.band===2)st.band=saved.band;
+    if(saved.anchor&&saved.anchor.w>0&&saved.anchor.h>0&&saved.anchor.p>0)st.anchor=saved.anchor }}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function sizes(){return st.S[st.mode]}
+function over(){return st.O[st.mode]}
+
+var money=function(n){return '$'+Math.round(n).toLocaleString('en-US')};
+function nice(p){var s=p<200?5:p<1000?25:p<3000?50:p<10000?100:250;return Math.max(s,Math.round(p/s)*s)}
+function key(s){return s[0]+'x'+s[1]}
+function trim(v){return String(+v.toFixed(1))}
+function dim(v){return st.unit==='in'?trim(v):String(Math.round(v*CM))}
+function label(s){return dim(s[0])+' × '+dim(s[1])+' '+st.unit}
+function tierOf(s){var L=Math.max(s[0],s[1]);for(var i=0;i<TIERS.length;i++)if(L<=TIERS[i][2])return i;return 3}
+/* Rate at 16 x 20 in $ per sq in. Experience and sales are blended (not multiplied in full) so the top answers can't stack up. */
+function base(){var o=function(i){return FILTERS[i].opts[st.pick[FILTERS[i].key]][1]};return K0*o(0)*o(1)*Math.pow(o(2)*o(3),EXPO)}
+/* Shape of the price per sq in as pieces grow, relative to 16 x 20. Taken from one working artist's real list: steep for small work, level for large. */
+var SHAPE=[[16,10],[64,4.4],[144,3.8],[320,3.6],[576,2.9],[1000,2.6],[1700,2.35],[2500,2.3],[6000,2.3]].map(function(a){return [Math.log(a[0]),a[1]/3.6]});
+function shape(A){var x=Math.log(A),c=SHAPE;if(x<=c[0][0])return c[0][1];if(x>=c[c.length-1][0])return c[c.length-1][1];
+  for(var i=0;i<c.length-1;i++){if(x<=c[i+1][0]){var t=(x-c[i][0])/(c[i+1][0]-c[i][0]);return c[i][1]+(c[i+1][1]-c[i][1])*t}}return 1}
+/* Optional anchor: one price you already know, at one size. The whole formula list is scaled so that size lands on your price (at the middle of the range). */
+function scale(){var a=st.anchor;if(!a)return 1;var A=a.w*a.h;return a.p/(base()*shape(A)*A)}
+function priceFor(s){var A=s[0]*s[1];return nice(base()*scale()*BANDS[st.band][1]*shape(A)*A)}
+function listPrice(s){return priceFor(s)}
+function raised(s){return st.raise>0&&s[0]*s[1]>=RAISE_FROM}
+function retail(s){var o=over()[key(s)];if(o>0)return o;var p=listPrice(s);return raised(s)?nice(p*(1+st.raise/100)):p}
+function commOf(r){return nice(r*(1+st.comm/100))}
+
+/* filters */
+FILTERS.forEach(function(f){
+  var g=document.createElement('div');g.className='group';g.setAttribute('role','group');g.setAttribute('aria-label',f.label);
+  g.innerHTML='<p class="label">'+f.label+'</p><div class="chips"></div>'+(f.key==='loc'?'<p class="ex" id="locEx"></p>':'');
+  f.opts.forEach(function(o,i){var b=document.createElement('button');b.type='button';b.className='chip';b.textContent=o[0];
+    b.setAttribute('aria-pressed',i===st.pick[f.key]);
+    b.onclick=function(){st.pick[f.key]=i;g.querySelectorAll('.chip').forEach(function(c,j){c.setAttribute('aria-pressed',j===i)});renderAll()};
+    g.querySelector('.chips').appendChild(b)});
+  $('filters').appendChild(g);
+});
+
+function renderBase(){
+  Array.prototype.forEach.call($('bandBox').querySelectorAll('.chip'),function(c){c.setAttribute('aria-pressed',+c.dataset.band===st.band)});
+  $('locEx').textContent=FILTERS[0].opts[st.pick.loc][2];
+  var r=base()*scale(),u=st.unit==='in'?1:1/SQ,f=function(v){return '$'+(v*u).toFixed(2)};
+  $('baseRate').textContent=f(r);
+  $('baseUnit').textContent='per sq '+st.unit+' · likely range '+f(r*BANDS[0][1])+'–'+f(r*BANDS[2][1]);
+  $('baseNote').textContent='At '+label([16,20])+'. Smaller pieces get a higher rate per sq '+st.unit+', larger ones a lower rate that levels off. Pick where in the range you want to price below.';
+  $('xNote').textContent=st.anchor?'Pinned to '+label([st.anchor.w,st.anchor.h])+' at '+money(st.anchor.p)+'. Every other size follows from it.':'';
+  $('xClear').hidden=!st.anchor;
+}
+function renderRows(){
+  var list=sizes().slice().sort(function(a,b){var ta=tierOf(a),tb=tierOf(b);return ta-tb||a[0]*a[1]-b[0]*b[1]||a[0]-b[0]});
+  var html='',last=-1;
+  list.forEach(function(s){
+    var t=tierOf(s);
+    if(t!==last){last=t;var tl=TIERS[t],edge=t===0?'up to '+dim(12)+' '+st.unit:t===3?'over '+dim(54)+' '+st.unit:dim(TIERS[t-1][2]+1)+'–'+dim(tl[2])+' '+st.unit;
+      html+='<div class="tier" role="presentation">'+tl[0]+' <em>'+edge+'</em></div>'}
+    var r=retail(s),k=key(s),edited=over()[k]>0,A=s[0]*s[1],per=r/A,perShown=st.unit==='in'?per:per/SQ;
+    var extra='';
+    if(!edited&&raised(s))extra+=' · <span class="was">was '+money(listPrice(s))+'</span>';
+    html+='<div class="row" role="row" data-k="'+k+'"><div class="sz" role="cell"><b>'+label(s)+'</b><small>$'+perShown.toFixed(2)+' per sq '+st.unit+extra+'</small></div>'
+      +'<div class="pre" role="cell"><i>$</i><input type="number" inputmode="numeric" min="0" step="5" value="'+r+'" class="'+(edited?'edited':'')+'" data-k="'+k+'" aria-label="Retail price for '+label(s)+'"></div>'
+      +'<div class="comm num" role="cell" data-c="'+k+'">'+money(commOf(r))+'</div>'
+      +'<button type="button" class="rm" data-rm="'+k+'" aria-label="Remove '+label(s)+'">×</button></div>';
+  });
+  $('rows').innerHTML=html||'<p class="hint" style="padding:16px 0">No sizes yet. Add one above, or reset sizes.</p>';
+  $('commHead').textContent='Commission +'+st.comm+'%';
+  $('raiseLbl').textContent='Test a raise on '+label([24,24])+' and up';
+  $('resetPrices').hidden=!Object.keys(over()).length;
+}
+$('rows').addEventListener('input',function(e){
+  var el=e.target;if(!el.dataset||!el.dataset.k)return;
+  var v=parseFloat(el.value);if(!(v>0))return;
+  over()[el.dataset.k]=Math.round(v);el.classList.add('edited');
+  var c=document.querySelector('[data-c="'+el.dataset.k+'"]');if(c)c.textContent=money(commOf(over()[el.dataset.k]));
+  $('resetPrices').hidden=false;save();
+});
+$('rows').addEventListener('change',function(e){
+  var el=e.target;if(!el.dataset||!el.dataset.k)return;
+  if(!(parseFloat(el.value)>0)){delete over()[el.dataset.k];save();renderRows()}
+});
+$('rows').addEventListener('click',function(e){
+  var b=e.target.closest('[data-rm]');if(!b)return;
+  st.S[st.mode]=sizes().filter(function(s){return key(s)!==b.dataset.rm});delete over()[b.dataset.rm];save();renderRows();
+});
+
+$('comm').value=st.comm;
+$('comm').addEventListener('input',function(){var v=parseFloat($('comm').value);st.comm=v>=0?v:0;save();renderRows()});
+$('raise').value=st.raise;
+$('raise').addEventListener('input',function(){var v=parseFloat($('raise').value);st.raise=v>=0?v:0;save();renderRows()});
+$('add').onclick=function(){
+  var w=parseFloat($('aw').value),h=parseFloat($('ah').value);
+  if(!(w>0&&h>0)||sizes().length>=MAXSIZES)return;
+  if(st.unit==='cm'){w=w/CM;h=h/CM}
+  var s=[Math.round(w*100)/100,Math.round(h*100)/100];
+  if(!sizes().some(function(x){return key(x)===key(s)}))sizes().push(s);
+  $('aw').value='';$('ah').value='';save();renderRows();
+};
+['aw','ah'].forEach(function(id){$(id).addEventListener('keydown',function(e){if(e.key==='Enter')$('add').click()})});
+$('resetPrices').onclick=function(){st.O[st.mode]={};save();renderRows()};
+$('resetSizes').onclick=function(){st.S[st.mode]=defSizes(st.mode);st.O[st.mode]={};save();renderRows()};
+
+$('copy').onclick=function(){
+  var list=sizes().slice().sort(function(a,b){var ta=tierOf(a),tb=tierOf(b);return ta-tb||a[0]*a[1]-b[0]*b[1]});
+  var lines=['My '+new Date().getFullYear()+' price list'+(st.raise>0?' (test: +'+st.raise+'% on '+label([24,24])+' and up)':''),'Size | Retail | Commission (+'+st.comm+'%)'];
+  list.forEach(function(s){var r=retail(s);lines.push(label(s)+' | '+money(r)+' | '+money(commOf(r)))});
+  var text=lines.join('\n'),note=$('copyNote');
+  function ok(){note.textContent='Copied.'}
+  function fallback(){var ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy')?ok():note.textContent='Select the list and copy it.'}catch(e){note.textContent='Select the list and copy it.'}document.body.removeChild(ta)}
+  try{navigator.clipboard.writeText(text).then(ok,fallback)}catch(e){fallback()}
+};
+
+function setUnit(u){st.unit=u;$('uIn').setAttribute('aria-pressed',u==='in');$('uCm').setAttribute('aria-pressed',u==='cm');save();renderAll()}
+$('uIn').onclick=function(){setUnit('in')};$('uCm').onclick=function(){setUnit('cm')};
+$('xApply').onclick=function(){
+  var w=parseFloat($('xw').value),h=parseFloat($('xh').value),p=parseFloat($('xp').value);
+  if(!(w>0&&h>0&&p>0))return;
+  if(st.unit==='cm'){w=w/CM;h=h/CM}
+  st.anchor={w:Math.round(w*100)/100,h:Math.round(h*100)/100,p:Math.round(p)};
+  $('xw').value='';$('xh').value='';$('xp').value='';save();renderAll();
+};
+$('xClear').onclick=function(){st.anchor=null;save();renderAll()};
+['xw','xh','xp'].forEach(function(id){$(id).addEventListener('keydown',function(e){if(e.key==='Enter')$('xApply').click()})});
+$('bandBox').addEventListener('click',function(e){var b=e.target.closest('[data-band]');if(!b)return;st.band=+b.dataset.band;save();renderAll()});
+function renderAll(){renderBase();renderRows();save()}
+$('yr').textContent=new Date().getFullYear();
+$('uIn').setAttribute('aria-pressed',st.unit==='in');$('uCm').setAttribute('aria-pressed',st.unit==='cm');
+FILTERS.forEach(function(f,i){var chips=$('filters').children[i].querySelectorAll('.chip');chips.forEach(function(c,j){c.setAttribute('aria-pressed',j===st.pick[f.key])})});
+renderAll();
+})();
+</script>
+</body>
+</html>
