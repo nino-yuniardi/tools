@@ -1,35 +1,51 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
 <title>The Nudge · Nino Studio</title>
-<meta name="description" content="Name what's in the way today, get a five-minute dare, and grow a tree one made thing at a time.">
-<meta property="og:title" content="The Nudge">
-<meta property="og:description" content="Name what's in the way today, get a five-minute dare, and grow a tree one made thing at a time.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://tools.nino.studio/nudge/">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,300;0,400;0,600;0,700;1,300&amp;display=swap" rel="stylesheet">
+<meta content="Name what's in the way today, get a five-minute dare, and grow a tree one made thing at a time. A small tool for artists by Nino Studio." name="description"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300&amp;family=Barlow+Condensed:wght@500;600&amp;display=swap" rel="stylesheet"/>
 <style>
-body{margin:0}
+html,body{margin:0;height:100%;background:#F4EEE6}
+body{overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'Newsreader',Georgia,serif;color:#2E2C29;-webkit-font-smoothing:antialiased}
+body.desk{background:#EFEBE4}
+#wrap{position:relative;flex-shrink:0}
+body.desk #wrap{border-radius:28px;box-shadow:0 1px 2px rgba(46,44,41,.06),0 24px 60px -24px rgba(46,44,41,.35);overflow:hidden}
+#frame{width:390px;height:844px;position:relative;overflow:hidden;background:#F4EEE6;transform-origin:0 0;touch-action:auto;user-select:none;-webkit-user-select:none}
+[hidden]{display:none!important}
 a{color:#2E2C29}a:hover{color:#6E6962}
-button{cursor:pointer}
-button:focus-visible{outline:2px solid #2E2C29;outline-offset:3px}
+.alltools{z-index:3}
+button{cursor:pointer;font-family:'Newsreader',Georgia,serif;color:#2E2C29}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid #2E2C29;outline-offset:3px}
 p{text-wrap:balance}
+.abs{position:absolute}
+.scr{position:absolute;inset:0}
+.pill{height:56px;border:none;border-radius:28px;background:#2E2C29;color:#F4EEE6;font-size:15px;letter-spacing:.02em}
+.ghost{height:46px;border:none;background:transparent;font-size:14px}
+.iconbtn{width:44px;height:44px;border:none;background:transparent;display:flex;align-items:center;justify-content:center;padding:0}
+.kick{font-size:11px;font-weight:700;letter-spacing:.06em;color:#6E6962}
 @keyframes nIn{from{opacity:0}to{opacity:1}}
 @keyframes nBreathe{0%{transform:scale(1) translate(0,0)}100%{transform:scale(1.08) translate(-3px,2px)}}
 @keyframes nBloom{0%{opacity:.45;transform:translate(0,0) scale(.94)}50%{opacity:1}100%{opacity:.8;transform:translate(4px,-3px) scale(1.07)}}
 @keyframes nTint{0%{filter:saturate(.85) hue-rotate(-8deg)}100%{filter:saturate(1.2) hue-rotate(8deg)}}
 @keyframes nHint{0%,55%,100%{transform:translateX(0)}20%{transform:translateX(-46px)}38%{transform:translateX(0)}}
 @keyframes nArrow{0%,100%{transform:translateX(0);opacity:.5}50%{transform:translateX(6px);opacity:1}}
-@keyframes nSway{0%{transform:rotate(-0.8deg)}100%{transform:rotate(0.8deg)}}
+@keyframes nSway{0%{transform:rotate(-.8deg)}100%{transform:rotate(.8deg)}}
 @keyframes nLeaf{0%{opacity:.6;transform:scale(.92)}100%{opacity:1;transform:scale(1.08)}}
 @keyframes nGrow{0%{opacity:0;transform:scale(0)}60%{opacity:1;transform:scale(1.25)}100%{opacity:1;transform:scale(1)}}
 @keyframes nRain{0%{transform:translateY(-120px);opacity:0}15%{opacity:.9}85%{opacity:.9}100%{transform:translateY(150px);opacity:0}}
 @keyframes nSoak{0%{opacity:0}40%{opacity:.7}100%{opacity:.35}}
 @keyframes nLift{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.screen{animation:nIn 600ms ease-out both}
+@keyframes nHover{0%,100%{transform:translate(0,0)}50%{transform:translate(7px,-5px)}}
+@keyframes nFlap{0%,100%{transform:scaleY(1)}50%{transform:scaleY(-.5)}}
+@keyframes nPeck{0%,70%,100%{transform:rotate(0)}80%{transform:rotate(22deg)}90%{transform:rotate(0)}}
+@keyframes nPulse{0%,100%{opacity:.5}50%{opacity:1}}
+@keyframes nHop{0%,80%,100%{transform:translateY(0)}86%{transform:translateY(-3px)}92%{transform:translateY(0)}}
+@keyframes nPop{0%{opacity:0;transform:scale(.3)}70%{opacity:1;transform:scale(1.12)}100%{transform:scale(1)}}
+.scr.in{animation:nIn 600ms ease-out both}
 .breathe{animation:nBreathe 14s ease-in-out infinite alternate,nTint 18s ease-in-out infinite alternate;transform-origin:50% 50%;transform-box:view-box}
 .breathe ellipse{animation:nBloom var(--d,10s) ease-in-out var(--dl,0s) infinite alternate;transform-origin:center;transform-box:fill-box}
 .hint{animation:nHint 2600ms ease-in-out 1200ms 2 both}
@@ -40,506 +56,332 @@ p{text-wrap:balance}
 .rain{animation:nRain 1500ms ease-in var(--dl,0s) both;transform-box:fill-box}
 .soak{animation:nSoak 2400ms ease-out both}
 .lift{animation:nLift 700ms ease-out both}
-@keyframes nHover{0%,100%{transform:translate(0,0)}50%{transform:translate(7px,-5px)}}
-@keyframes nFlap{0%,100%{transform:scaleY(1)}50%{transform:scaleY(-0.5)}}
-@keyframes nPeck{0%,70%,100%{transform:rotate(0)}80%{transform:rotate(22deg)}90%{transform:rotate(0)}}
-@keyframes nPulse{0%,100%{opacity:.5}50%{opacity:1}}
 .hover{animation:nHover 5s ease-in-out var(--dl,0s) infinite}
 .flap{animation:nFlap 520ms ease-in-out infinite;transform-origin:50% 100%;transform-box:fill-box}
-@keyframes nHop{0%,80%,100%{transform:translateY(0)}86%{transform:translateY(-3px)}92%{transform:translateY(0)}}
 .hop{animation:nHop 5s ease-in-out var(--dl,0s) infinite}
-@keyframes nPop{0%{opacity:0;transform:scale(.3)}70%{opacity:1;transform:scale(1.12)}100%{transform:scale(1)}}
 .pop{animation:nPop 500ms cubic-bezier(.3,.7,.3,1) both;transform-origin:50% 100%;transform-box:fill-box}
 .peck{animation:nPeck 4.5s ease-in-out var(--dl,0s) infinite;transform-origin:30% 100%;transform-box:fill-box}
 .pulse{animation:nPulse 1.8s ease-in-out infinite}
 .peek{-webkit-appearance:none;appearance:none;width:100%;height:44px;background:transparent;margin:0;position:relative;cursor:pointer}
 .peek::-webkit-slider-runnable-track{height:4px;background:transparent}
 .peek::-moz-range-track{height:4px;background:transparent}
-.peek::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:12px;background:#FAF8F4;border:1.5px solid #2E2C29;margin-top:-10px;box-shadow:0 2px 6px rgba(46,44,41,.18)}
-.peek::-moz-range-thumb{width:22px;height:22px;border-radius:12px;background:#FAF8F4;border:1.5px solid #2E2C29}
-@media (prefers-reduced-motion: reduce){.breathe,.breathe ellipse,.hint,.arrow,.sway,.leaf,.hover,.flap,.peck,.pulse{animation:none}}
+.peek::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:12px;background:#F4EEE6;border:1.5px solid #2E2C29;margin-top:-10px;box-shadow:0 2px 6px rgba(46,44,41,.18)}
+.peek::-moz-range-thumb{width:22px;height:22px;border-radius:12px;background:#F4EEE6;border:1.5px solid #2E2C29}
+#canopy ellipse{transition:rx 600ms ease,ry 600ms ease}
+#hintwrap{overflow:hidden}
+#dareSwipe{margin-top:12px;min-height:110px;flex-shrink:0;overflow:hidden}
+#dareTrack{display:flex}
+#dareTrack>div{flex:0 0 100%;min-width:0;min-height:110px}
+.dare-side{display:none}
+.dare-copy{margin:0;font-weight:400;font-size:27px;line-height:1.3;letter-spacing:-.005em}
+#pickBackdrop{display:none}
+#dots .page-dot{display:flex;align-items:center;justify-content:center;width:18px;height:28px;padding:0;border:0;background:transparent}
+#dots .page-dot span{display:block;height:5px;border-radius:3px;transition:width 300ms ease,background 300ms ease}
+#track{width:calc(var(--pw,390px)*8);height:var(--ph,844px)}
+.panel{position:relative;width:var(--pw,390px);height:var(--ph,844px);flex-shrink:0;overflow:hidden}
+.panel>svg{position:absolute;inset:0;width:100%;height:100%}
+#dareArt{width:100%;height:100%}
+.edge{display:none;position:absolute;top:50%;margin-top:-24px;width:48px;height:48px;border-radius:50%;border:1px solid #CFC8BC;background:rgba(250,248,244,.88);align-items:center;justify-content:center;padding:0;z-index:2}
+.edge-l{left:12px}.edge-r{right:12px}
+.td{display:none}
+/* The artwork fills the viewport; only the content has a centered reading width. */
+body.wide{--content-inset:max(64px,calc((100% - 600px)/2));--page-inset:max(40px,calc((100% - 1120px)/2))}
+body.wide .edge{display:flex}
+body.wide .edge:hover{background:#F4EEE6}
+body.wide #prevBtn,body.wide #nextBtn{display:none}
+body.wide .tt{display:none}
+body.wide .td{display:inline}
+body.wide #s-dare .iconbtn{border:1px solid #CFC8BC;border-radius:50%;width:52px;height:52px}
+body.wide #wrap{border-radius:0;box-shadow:none}
+body.wide .alltools{left:var(--page-inset)!important;top:18px!important}
+body.wide .phead{padding:40px var(--page-inset) 0!important}
+body.wide .pq{left:var(--content-inset)!important}
+body.wide .pctl{left:var(--content-inset)!important;right:var(--content-inset)!important;width:auto;bottom:40px!important}
+body.wide .pgrad{top:0!important;height:auto!important;background:linear-gradient(to bottom,rgba(250,248,244,0) 15%,rgba(250,248,244,.65) 60%,rgba(250,248,244,.96))!important}
+body.wide .ptext{left:var(--content-inset)!important;right:var(--content-inset)!important;bottom:220px!important}
+body.wide .ph1{font-size:clamp(64px,6.5vw,88px)!important}
+body.wide .pp{font-size:18px!important;max-width:520px!important}
+/* One centered content stack; the art is a separate, full-screen background layer. */
+body.wide #s-dare{box-sizing:border-box;padding:64px 40px 40px;overflow-x:hidden;overflow-y:auto;isolation:isolate}
+body.wide #s-dare:not([hidden]){display:grid!important;grid-template-columns:minmax(0,600px);grid-auto-rows:max-content;justify-content:center;align-content:safe center;row-gap:28px}
+body.wide #dareArtBox{display:contents}
+body.wide #dareArt{position:absolute;inset:0;width:100%;height:100%;z-index:-2;pointer-events:none}
+body.wide .dgrad{inset:0!important;height:100%!important;width:100%;z-index:-1;pointer-events:none;background:linear-gradient(to bottom,rgba(250,248,244,.25),rgba(250,248,244,.88) 35%,rgba(250,248,244,.96))!important}
+body.wide #dareArtBox>button{z-index:2}
+body.wide .dtitle{position:relative;inset:auto!important;grid-column:1;grid-row:1;min-width:0}
+body.wide .dtitle h2{font-size:56px!important}
+body.wide .dcol{grid-column:1;grid-row:2;min-width:0;width:100%;padding:0!important;flex-grow:0!important}
+body.wide #reframe{font-size:26px!important}
+body.wide #dareText{font-size:36px!important}
+body.wide .dctl{margin-top:48px!important}
+body.wide #s-timer{padding-left:max(26px,calc(50% - 280px))!important;padding-right:max(26px,calc(50% - 280px))!important}
+body.wide #timerDare{font-size:26px!important;max-width:520px!important}
+body.wide .tbtns{width:360px;align-self:center!important}
+body.wide #s-tree:not([hidden]){display:grid!important;grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr 1fr;column-gap:48px;padding:40px var(--page-inset) 48px!important}
+body.wide #treeHead{grid-column:1/-1}
+body.wide #treeArt{grid-column:1;grid-row:2/4;margin:0!important;align-self:center}
+body.wide #treeArt svg{width:100%;height:auto;max-height:72vh}
+body.wide #treeText{grid-column:2;grid-row:2;align-self:end}
+body.wide #treeBtns{grid-column:2;grid-row:3;margin-top:28px!important;align-self:start}
+@media (prefers-reduced-motion:reduce){.breathe,.breathe ellipse,.hint,.arrow,.sway,.leaf,.hover,.flap,.peck,.pulse{animation:none}}
+
+/* Paper card language: warm watercolor paper, light serif, condensed small caps */
+body{font-weight:300;font-size:17px}
+body.desk{background:#E9E2D6}
+body.desk #wrap{border-radius:40px}
+[style*="font-weight:600"],[style*="font-weight:700"],[style*="font-weight:bold"]{font-weight:400!important}
+.kick,.pq,p.abs[style*="letter-spacing:.06em"]{font-family:'Barlow Condensed',sans-serif!important;font-weight:500!important;font-size:13px!important;letter-spacing:.2em!important;text-transform:uppercase}
+.pq::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#D6361F;margin-right:10px;vertical-align:1px}
+.pill{font-family:'Barlow Condensed',sans-serif;font-weight:500;font-size:17px;letter-spacing:.18em;text-transform:uppercase;background:#1F1C18;height:60px;border-radius:30px}
+.ghost,.alltools{font-family:'Barlow Condensed',sans-serif!important;font-weight:500;letter-spacing:.16em;text-transform:uppercase;font-size:12px!important}
+.phead span:first-child{font-weight:300!important;font-size:34px!important;letter-spacing:-.03em!important}
+h1,h2,h3{font-weight:300;letter-spacing:-.025em}
 </style>
-<style>
-/* The tool is drawn on a fixed 390 by 844 frame. The page scales that frame to fit the screen. */
-html,body{height:100%}
-body{margin:0;background:#FAF8F4;color:#2E2C29;overflow:hidden;display:flex;flex-direction:column;align-items:center;
-  padding-top:env(safe-area-inset-top,0px)}
-.bar{flex:none;height:32px;display:flex;align-items:center;box-sizing:border-box;padding:0 20px}
-.bar a{font-family:'Bitter',serif;font-size:13px;color:#55514B;text-decoration:none}
-.bar a:hover{text-decoration:underline}
-#fit{flex:none;position:relative}
-#frame{width:390px;height:844px;transform-origin:0 0}
-.about{display:none}
-/* Desktop: the tool sits as a panel on the right, with a short introduction on the left. */
-@media (min-width:900px) and (min-height:560px){
-  body{flex-direction:row;justify-content:center;align-items:center;gap:72px;padding:0 48px;box-sizing:border-box;background:#F1EDE5}
-  .bar{display:none}
-  .about{display:flex;flex-direction:column;gap:28px;max-width:400px;font-family:'Bitter',serif}
-  .about a{font-size:14px;color:#55514B;text-decoration:none}
-  .about a:hover{text-decoration:underline}
-  .about h1{margin:0;font-weight:600;font-size:56px;line-height:1;letter-spacing:-0.02em}
-  .about .lead{margin:0;font-weight:300;font-size:22px;line-height:1.4;text-wrap:pretty}
-  .about ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:16px;counter-reset:n}
-  .about li{display:grid;grid-template-columns:28px 1fr;gap:0 12px;font-size:16px;line-height:1.45;color:#55514B;counter-increment:n}
-  .about li::before{content:counter(n);font-weight:700;font-size:13px;color:#2E2C29;padding-top:3px}
-  .about li b{display:block;font-weight:600;color:#2E2C29}
-  .about .made{margin:0;font-size:14px;color:#55514B}
-  #fit{border-radius:28px;overflow:hidden;outline:1px solid #E3DCD0;box-shadow:0 1px 2px rgba(46,44,41,.08),0 28px 64px -28px rgba(46,44,41,.4)}
-}
-</style>
-</head>
+<style>@media (max-width:767px){
+  /* Mobile uses real viewport dimensions, not a transformed desktop canvas. */
+  #s-pick:not([hidden]){display:grid;grid-template-rows:auto auto minmax(0,1fr) auto;isolation:isolate}
+  #pickBackdrop{display:block;position:absolute;inset:0;z-index:-1;pointer-events:none}
+  #pickBackdrop svg{display:block;width:100%;height:100%}
+  #pickBackdrop::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(250,248,244,0),rgba(250,248,244,.82) 70%,rgba(250,248,244,.96))}
+  #s-pick .phead{position:relative;inset:auto!important;grid-row:1;padding:44px 24px 0!important;min-width:0}
+  #s-pick .pq{position:relative;inset:auto!important;grid-row:2;margin:22px 28px 12px!important}
+  #hintwrap{position:relative;inset:auto!important;grid-row:3;min-width:0;min-height:0;width:100%;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;touch-action:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  #hintwrap.hint{animation:none}
+  #hintwrap::-webkit-scrollbar,#dareSwipe::-webkit-scrollbar{display:none}
+  #track{width:100%;height:100%}
+  .panel{box-sizing:border-box;flex:0 0 100%;width:100%;height:100%;min-width:0;display:flex;flex-direction:column;padding:20px 28px 24px;overflow-x:hidden;overflow-y:auto;scroll-snap-align:start;scroll-snap-stop:always}
+  .panel>svg,.panel>.pgrad{display:none}
+  .panel .ptext{position:relative;inset:auto!important;flex:0 0 auto;margin-top:auto}
+  .panel .ph1{font-size:clamp(44px,16vw,64px)!important}
+  #s-pick .pctl{position:relative;inset:auto!important;grid-row:4;min-width:0;margin:0 24px;padding:16px 0 max(24px,env(safe-area-inset-bottom,0px));gap:16px!important}
+  /* Dares take their natural height; the whole screen scrolls on short phones. */
+  #s-dare{overflow-x:hidden;overflow-y:auto;overscroll-behavior-y:contain}
+  #s-dare .dcol{box-sizing:border-box;flex:1 0 auto!important;width:100%;min-width:0}
+  #dareSwipe{width:100%;min-width:0;min-height:0;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;touch-action:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  #dareTrack{width:100%;align-items:stretch}
+  #dareTrack>div{box-sizing:border-box;flex:0 0 100%;min-width:0;min-height:0;scroll-snap-align:start;scroll-snap-stop:always}
+  .dare-side{display:block}
+  #s-dare .dctl{margin-top:28px!important}
+}</style></head>
 <body>
-<div class="bar" id="bar"><a href="../">← All tools</a></div>
-<aside class="about">
-  <a href="../">← All tools</a>
-  <h1>The Nudge</h1>
-  <p class="lead">Name what's in the way today, get a five-minute dare, and grow a tree one made thing at a time.</p>
-  <ol>
-    <li><div><b>Name it</b>Find the thought that is stopping you today.</div></li>
-    <li><div><b>Take the dare</b>Five minutes, and one small thing to make.</div></li>
-    <li><div><b>Water your tree</b>Each finished dare grows a leaf. Twenty-one and it is in bloom.</div></li>
-  </ol>
-  <p class="made">Made by Nino Studio.</p>
-</aside>
-<div id="fit"><div id="frame"></div></div>
+<div id="wrap">
+<div id="frame">
 
-<template id="tpl">
-<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #FAF8F4; color: #2E2C29; font-family: 'Bitter', serif; touch-action: pan-y; user-select: none; -webkit-user-select: none" onPointerDown="{{down}}" onPointerMove="{{move}}" onPointerUp="{{up}}" onPointerLeave="{{up}}" onPointerCancel="{{up}}">
-
-<svg width="0" height="0" style="position: absolute" aria-hidden="true">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <filter id="wash" x="-60%" y="-60%" width="220%" height="220%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="3" seed="5" result="noise"></feTurbulence>
-      <feDisplacementMap in="SourceGraphic" in2="noise" scale="26" xChannelSelector="R" yChannelSelector="G" result="bleed"></feDisplacementMap>
-      <feGaussianBlur in="bleed" stdDeviation="6" result="soft"></feGaussianBlur>
-      <feGaussianBlur in="bleed" stdDeviation="1.5" result="edge"></feGaussianBlur>
-      <feComponentTransfer in="edge" result="edgeFaint"><feFuncA type="linear" slope="0.35"></feFuncA></feComponentTransfer>
-      <feMerge><feMergeNode in="soft"></feMergeNode><feMergeNode in="edgeFaint"></feMergeNode></feMerge>
+      <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="3" seed="5" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="26" xChannelSelector="R" yChannelSelector="G" result="bleed"/>
+      <feGaussianBlur in="bleed" stdDeviation="6" result="soft"/>
+      <feGaussianBlur in="bleed" stdDeviation="1.5" result="edge"/>
+      <feComponentTransfer in="edge" result="edgeFaint"><feFuncA type="linear" slope="0.35"/></feComponentTransfer>
+      <feMerge><feMergeNode in="soft"/><feMergeNode in="edgeFaint"/></feMerge>
     </filter>
     <filter id="dab" x="-80%" y="-80%" width="260%" height="260%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.12" numOctaves="2" seed="3" result="noise"></feTurbulence>
-      <feDisplacementMap in="SourceGraphic" in2="noise" scale="7" xChannelSelector="R" yChannelSelector="G" result="bleed"></feDisplacementMap>
-      <feGaussianBlur in="bleed" stdDeviation="1.6" result="soft"></feGaussianBlur>
-      <feGaussianBlur in="bleed" stdDeviation="0.4" result="edge"></feGaussianBlur>
-      <feComponentTransfer in="edge" result="edgeFaint"><feFuncA type="linear" slope="0.4"></feFuncA></feComponentTransfer>
-      <feMerge><feMergeNode in="soft"></feMergeNode><feMergeNode in="edgeFaint"></feMergeNode></feMerge>
+      <feTurbulence type="fractalNoise" baseFrequency="0.12" numOctaves="2" seed="3" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="7" xChannelSelector="R" yChannelSelector="G" result="bleed"/>
+      <feGaussianBlur in="bleed" stdDeviation="1.6" result="soft"/>
+      <feGaussianBlur in="bleed" stdDeviation="0.4" result="edge"/>
+      <feComponentTransfer in="edge" result="edgeFaint"><feFuncA type="linear" slope="0.4"/></feComponentTransfer>
+      <feMerge><feMergeNode in="soft"/><feMergeNode in="edgeFaint"/></feMerge>
     </filter>
     <filter id="ink" x="-20%" y="-20%" width="140%" height="140%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="2" seed="8" result="noise"></feTurbulence>
-      <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" result="d"></feDisplacementMap>
-      <feGaussianBlur in="d" stdDeviation="0.5"></feGaussianBlur>
+      <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="2" seed="8" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feGaussianBlur in="d" stdDeviation="0.5"/>
     </filter>
     <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.25" numOctaves="2" seed="4" result="noise"></feTurbulence>
-      <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.4" xChannelSelector="R" yChannelSelector="G" result="d"></feDisplacementMap>
-      <feGaussianBlur in="d" stdDeviation="0.3"></feGaussianBlur>
+      <feTurbulence type="fractalNoise" baseFrequency="0.25" numOctaves="2" seed="4" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.4" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feGaussianBlur in="d" stdDeviation="0.3"/>
     </filter>
     <filter id="paper" x="0" y="0" width="100%" height="100%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="11"></feTurbulence>
-      <feColorMatrix type="matrix" values="0 0 0 0 0.45  0 0 0 0 0.4  0 0 0 0 0.33  0 0 0 0.07 0"></feColorMatrix>
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="11"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.45  0 0 0 0 0.4  0 0 0 0 0.33  0 0 0 0.07 0"/>
     </filter>
   </defs>
 </svg>
 
-<sc-if value="{{isPick}}" hint-placeholder-val="{{ true }}">
-  <div class="screen" style="position: absolute; inset: 0">
-    <div class="{{hintCls}}" style="position: absolute; inset: 0">
-      <div style="display: flex; width: 3120px; height: 844px; transform: translateX({{trackX}}px); transition: {{trackTr}}">
-        <sc-for list="{{panels}}" as="p" hint-placeholder-count="8">
-          <div style="position: relative; width: 390px; height: 844px; flex-shrink: 0; overflow: hidden">
-            <svg viewBox="0 0 160 120" width="390" height="844" preserveAspectRatio="xMidYMid slice" style="position: absolute; inset: 0" aria-hidden="true">
-              <rect width="160" height="120" fill="{{p.base}}"></rect>
-              <g class="{{p.cls}}" style="mix-blend-mode: multiply; animation-duration: {{p.dur}}">
-                <sc-for list="{{p.art}}" as="b" hint-placeholder-count="3">
-                  <ellipse cx="{{b.cx}}" cy="{{b.cy}}" rx="{{b.rx}}" ry="{{b.ry}}" fill="{{b.c}}" fill-opacity="{{b.o}}" style="--d: {{b.d}}; --dl: {{b.dl}}" filter="url(#wash)"></ellipse>
-                </sc-for>
-              </g>
-              <rect width="160" height="120" filter="url(#paper)"></rect>
-            </svg>
-            <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 520px; background: linear-gradient(to bottom, rgba(250, 248, 244, 0), rgba(250, 248, 244, 0.82) 55%, rgba(250, 248, 244, 0.94))"></div>
-            <div style="position: absolute; left: 28px; right: 28px; bottom: 196px; display: flex; flex-direction: column">
-              <h1 style="margin: 0; font-weight: 300; font-size: 64px; line-height: 0.98; letter-spacing: -0.025em">
-                <sc-for list="{{p.lines}}" as="ln" hint-placeholder-count="2"><span style="display: block">{{ln}}</span></sc-for>
-              </h1>
-              <p style="margin: 22px 0 0; font-weight: 400; font-size: 16px; line-height: 1.5; color: #3F3C37; max-width: 300px">{{p.hint}}</p>
-              <div style="margin-top: 22px; display: flex; gap: 10px; align-items: baseline">
-                <span style="flex-shrink: 0; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: #6E6962">WORTH KNOWING</span>
-                <span style="font-size: 13px; font-style: italic; font-weight: 300; line-height: 1.5; color: #3F3C37">{{p.fact}}</span>
-              </div>
-            </div>
-          </div>
-        </sc-for>
+<!-- PICK -->
+<section id="s-pick" class="scr in">
+  <div id="pickBackdrop" aria-hidden="true"><svg id="pickArt" viewBox="0 0 160 120" preserveAspectRatio="xMidYMid slice"></svg></div>
+  <div id="hintwrap" class="hint abs" style="inset:0">
+    <div id="track" style="display:flex"></div>
+  </div>
+  <a href="../" class="abs alltools" style="top:14px;left:28px;font-size:12px;color:#55514B;text-decoration:none">← All tools</a>
+  <button class="edge edge-l" id="edgeL" data-act="prev" aria-label="Previous"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E2C29" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <button class="edge edge-r" id="edgeR" data-act="next" aria-label="Next"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E2C29" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+  <div class="abs phead" style="top:0;left:0;right:0;padding:44px 24px 0;display:flex;justify-content:space-between;align-items:center">
+    <span style="font-weight:600;font-size:20px;letter-spacing:-.01em">nudge</span>
+    <button data-act="tree" id="treeBtn" style="height:44px;border:none;background:transparent;padding:0;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700">
+      <span id="leafCount">0</span>
+      <svg width="22" height="24" viewBox="0 0 22 24" fill="none" aria-hidden="true"><path d="M11 23V11M11 15c-2-1.5-4-2-6-2M11 13c2-1.5 4-2.5 6-3" stroke="#2E2C29" stroke-width="1.1" stroke-linecap="round"/><ellipse cx="11" cy="7" rx="4.5" ry="4" fill="#9DB894" opacity=".85"/><ellipse cx="5" cy="12" rx="3" ry="2.6" fill="#D99A7E" opacity=".8"/><ellipse cx="17.5" cy="9" rx="3" ry="2.6" fill="#7D93B5" opacity=".8"/></svg>
+    </button>
+  </div>
+  <p class="abs pq" style="top:112px;left:28px;margin:0;font-size:12px;font-weight:700;letter-spacing:.06em;color:#3F3C37">WHAT'S IN THE WAY TODAY?</p>
+  <div class="abs pctl" style="left:24px;right:24px;bottom:34px;display:flex;flex-direction:column;gap:22px">
+    <button class="pill" data-act="choose" id="chooseBtn">This is it</button>
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <button class="iconbtn" data-act="prev" id="prevBtn" aria-label="Previous"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2E2C29" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+        <div id="dots" role="group" aria-label="Choose what's in the way" style="display:flex;gap:2px;align-items:center"></div>
+        <span id="swipeHint" style="display:flex;align-items:center;gap:6px;font-size:12px;color:#55514B"><span class="tt">Swipe to see what else</span><span class="td">Use the arrows to see what else</span> <svg class="arrow" width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="#55514B" stroke-width="1.2" stroke-linecap="round" aria-hidden="true"><path d="M1 5h11M8 1l4 4-4 4"/></svg></span>
       </div>
+      <button class="iconbtn" data-act="next" id="nextBtn" aria-label="Next"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2E2C29" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
     </div>
+  </div>
+</section>
 
-    <div style="position: absolute; top: 0; left: 0; right: 0; padding: 44px 24px 0; display: flex; justify-content: space-between; align-items: center">
-      <span style="font-weight: 600; font-size: 20px; letter-spacing: -0.01em">nudge</span>
-      <button onClick="{{goTree}}" aria-label="Your tree, {{leafCount}} leaves" style="height: 44px; border: none; background: transparent; padding: 0; display: flex; align-items: center; gap: 8px; font-family: 'Bitter', serif; font-size: 13px; font-weight: 700; color: #2E2C29">
-        <span>{{leafCount}}</span>
-        <svg width="22" height="24" viewBox="0 0 22 24" fill="none" aria-hidden="true"><path d="M11 23V11M11 15c-2-1.5-4-2-6-2M11 13c2-1.5 4-2.5 6-3" stroke="#2E2C29" stroke-width="1.1" stroke-linecap="round"></path><ellipse cx="11" cy="7" rx="4.5" ry="4" fill="#9DB894" opacity="0.85"></ellipse><ellipse cx="5" cy="12" rx="3" ry="2.6" fill="#D99A7E" opacity="0.8"></ellipse><ellipse cx="17.5" cy="9" rx="3" ry="2.6" fill="#7D93B5" opacity="0.8"></ellipse></svg>
-      </button>
+<!-- DARE -->
+<section id="s-dare" class="scr" hidden style="display:flex;flex-direction:column">
+  <div id="dareArtBox" style="position:relative;height:var(--artH,300px);flex-shrink:0">
+    <svg id="dareArt" viewBox="0 0 160 120" width="390" height="300" preserveAspectRatio="xMidYMid slice" style="display:block" aria-hidden="true"></svg>
+    <div class="abs dgrad" style="left:0;right:0;bottom:0;height:120px;background:linear-gradient(to bottom,rgba(250,248,244,0),#F4EEE6)"></div>
+    <button data-act="back" aria-label="Back" class="abs" style="top:40px;left:16px;width:44px;height:44px;border-radius:22px;border:none;background:rgba(250,248,244,.85);display:flex;align-items:center;justify-content:center;padding:0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2E2C29" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <div class="abs dtitle" style="left:28px;right:28px;bottom:10px"><h2 id="dareTitle" style="margin:0;font-weight:300;font-size:40px;line-height:1;letter-spacing:-.02em"></h2></div>
+  </div>
+  <div class="dcol" style="flex-grow:1;padding:18px 28px 34px;display:flex;flex-direction:column">
+    <p id="reframe" style="margin:0;font-weight:300;font-size:21px;line-height:1.4;color:#3F3C37"></p>
+    <div style="width:28px;height:1px;background:#CFC8BC;margin:28px 0 22px"></div>
+    <div style="display:flex;justify-content:space-between;align-items:baseline">
+      <span class="kick">TODAY'S DARE · 5 MIN</span><span class="kick">NO. <span id="dareNo">1</span></span>
     </div>
-    <p style="position: absolute; top: 112px; left: 28px; margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: #3F3C37">WHAT'S IN THE WAY TODAY?</p>
+    <div id="dareSwipe"><div id="dareTrack">
+      <div class="dare-side" aria-hidden="true"><p id="darePrevious" class="dare-copy"></p></div>
+      <div id="card"><p id="dareText" class="dare-copy"></p></div>
+      <div class="dare-side" aria-hidden="true"><p id="dareNext" class="dare-copy"></p></div>
+    </div></div>
+    <div class="dctl" style="margin-top:auto;display:flex;flex-direction:column;gap:18px">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <button class="iconbtn" data-act="dareprev" aria-label="Another dare"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2E2C29" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:#55514B"><span class="tt">Not this one? Swipe for another</span><span class="td">Not this one? Try another</span> <svg class="arrow" width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="#55514B" stroke-width="1.2" stroke-linecap="round" aria-hidden="true"><path d="M1 5h11M8 1l4 4-4 4"/></svg></span>
+        <button class="iconbtn" data-act="darenext" aria-label="Another dare"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2E2C29" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
+      <button class="pill" data-act="begin">Begin</button>
+    </div>
+  </div>
+</section>
 
-    <div style="position: absolute; left: 24px; right: 24px; bottom: 34px; display: flex; flex-direction: column; gap: 22px">
-      <button onClick="{{chooseCurrent}}" style="height: 56px; border: none; border-radius: 28px; background: #2E2C29; color: #FAF8F4; font-family: 'Bitter', serif; font-size: 15px; letter-spacing: 0.02em">{{chooseLabel}}</button>
-      <div style="display: flex; align-items: center; justify-content: space-between">
-        <button onClick="{{prev}}" aria-label="Previous" style="width: 44px; height: 44px; border: none; background: transparent; display: flex; align-items: center; justify-content: center; padding: 0; opacity: {{prevOp}}">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2E2C29" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
-        </button>
-        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px">
-          <div style="display: flex; gap: 7px; align-items: center" aria-label="{{position}}">
-            <sc-for list="{{dots}}" as="d" hint-placeholder-count="8">
-              <span style="width: {{d.w}}px; height: 5px; border-radius: 3px; background: {{d.bg}}; transition: width 300ms ease, background 300ms ease"></span>
-            </sc-for>
-          </div>
-          <sc-if value="{{showSwipeHint}}" hint-placeholder-val="{{ true }}">
-            <span style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: #55514B">Swipe to see what else <svg class="arrow" width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="#55514B" stroke-width="1.2" stroke-linecap="round" aria-hidden="true"><path d="M1 5h11M8 1l4 4-4 4"></path></svg></span>
-          </sc-if>
+<!-- TIMER -->
+<section id="s-timer" class="scr" hidden style="box-sizing:border-box;padding:40px 26px 34px;display:flex;flex-direction:column;align-items:center">
+  <div style="align-self:stretch;display:flex;justify-content:space-between;align-items:center">
+    <span id="timerFear" class="kick"></span>
+    <button data-act="pause" id="pauseBtn" aria-label="Pause timer" style="width:44px;height:44px;border-radius:22px;border:1px solid #DDD6CB;background:transparent;display:flex;align-items:center;justify-content:center;padding:0">
+      <svg id="icPause" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2E2C29" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>
+      <svg id="icPlay" hidden width="14" height="14" viewBox="0 0 24 24" fill="#2E2C29" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg>
+    </button>
+  </div>
+  <p id="timerDare" style="margin:26px 0 0;text-align:center;font-weight:400;font-size:20px;line-height:1.4;max-width:310px"></p>
+  <div style="position:relative;width:280px;height:280px;margin-top:34px;border-radius:140px;overflow:hidden">
+    <svg id="timerArt" viewBox="20 0 120 120" width="280" height="280" preserveAspectRatio="xMidYMid slice" style="display:block" aria-hidden="true"></svg>
+    <div id="veil" class="abs" style="top:0;left:0;right:0;height:280px;background:rgba(250,248,244,.9);transition:height 1000ms linear"></div>
+  </div>
+  <span id="clock" style="margin-top:26px;font-weight:300;font-size:56px;line-height:1;font-variant-numeric:tabular-nums">5:00</span>
+  <span id="clockNote" style="margin-top:10px;font-size:12px;color:#55514B"></span>
+  <div class="tbtns" style="margin-top:auto;align-self:stretch;display:flex;flex-direction:column;gap:6px">
+    <button class="pill" data-act="finish">I made something</button>
+    <button class="ghost" data-act="notnow">Not now</button>
+  </div>
+</section>
+
+<!-- TREE -->
+<section id="s-tree" class="scr" hidden style="box-sizing:border-box;padding:44px 28px 34px;display:flex;flex-direction:column">
+  <div id="treeHead" style="display:flex;justify-content:space-between;align-items:center;margin:0 -4px">
+    <button data-act="back" aria-label="Back to today" style="height:44px;border:none;background:transparent;padding:0 4px;font-weight:600;font-size:20px;letter-spacing:-.01em">nudge</button>
+    <span id="kicker" class="kick"></span>
+  </div>
+  <div id="treeArt" style="position:relative;margin:6px -28px 0;display:flex;justify-content:center">
+    <svg id="treeSvg" width="390" height="350" viewBox="-25 42 350 315" role="img"></svg>
+  </div>
+  <div id="treeText" class="lift" style="display:flex;flex-direction:column">
+    <h1 id="treeTitle" style="margin:0;font-weight:300;font-size:44px;line-height:1;letter-spacing:-.02em"></h1>
+    <p id="treeNote" style="margin:14px 0 0;font-size:15px;line-height:1.55;color:#3F3C37"></p>
+    <div id="sliderBox" style="margin-top:16px;flex-direction:column;display:flex">
+      <div style="display:flex;justify-content:space-between;align-items:center;height:24px">
+        <label for="peekSlider" class="kick">PEEK AHEAD</label>
+        <button id="resetPreview" data-act="resetpreview" hidden style="height:32px;border:none;background:transparent;padding:0;font-size:12px;text-decoration:underline;text-decoration-color:#CFC8BC;text-underline-offset:4px">Back to today</button>
+        <span id="peekHint" class="pulse" style="display:flex;align-items:center;gap:6px;font-size:12px;color:#55514B">Drag to see what grows <svg class="arrow" width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="#55514B" stroke-width="1.2" stroke-linecap="round" aria-hidden="true"><path d="M1 5h11M8 1l4 4-4 4"/></svg></span>
+      </div>
+      <div style="position:relative;height:44px">
+        <div class="abs" style="left:12px;right:12px;top:20px;height:4px;border-radius:2px;background:#E6E0D6;overflow:hidden">
+          <div id="viewBar" class="abs" style="left:0;top:0;bottom:0;width:0;background:#C9C3B9;transition:width 120ms linear"></div>
+          <div id="realBar" class="abs" style="left:0;top:0;bottom:0;width:0;background:#6F8F6A"></div>
         </div>
-        <button onClick="{{next}}" aria-label="Next" style="width: 44px; height: 44px; border: none; background: transparent; display: flex; align-items: center; justify-content: center; padding: 0; opacity: {{nextOp}}">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2E2C29" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg>
-        </button>
+        <span class="abs" style="top:16px;width:1px;height:12px;background:#CFC8BC;left:calc(12px + (100% - 24px) * 0.3333)"></span>
+        <span class="abs" style="top:16px;width:1px;height:12px;background:#CFC8BC;left:calc(12px + (100% - 24px) * 0.6667)"></span>
+        <span class="abs" style="top:16px;width:1px;height:12px;background:#CFC8BC;left:calc(12px + (100% - 24px) * 0.9524)"></span>
+        <input id="peekSlider" class="peek abs" style="inset:0" type="range" min="0" max="21" step="1" value="0">
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;font-weight:700;letter-spacing:.04em;color:#8A847B">
+        <span>TODAY · <span id="todayCount">0</span></span><span>IN BLOOM · 21</span>
       </div>
     </div>
   </div>
-</sc-if>
-
-<sc-if value="{{isDare}}" hint-placeholder-val="{{ false }}">
-  <div class="screen" style="position: absolute; inset: 0; display: flex; flex-direction: column">
-    <div style="position: relative; height: 300px; flex-shrink: 0">
-      <svg viewBox="0 0 160 120" width="390" height="300" preserveAspectRatio="xMidYMid slice" style="display: block" aria-hidden="true">
-        <rect width="160" height="120" fill="{{fear.base}}"></rect>
-        <g class="breathe" style="mix-blend-mode: multiply">
-          <sc-for list="{{fear.art}}" as="b" hint-placeholder-count="3">
-            <ellipse cx="{{b.cx}}" cy="{{b.cy}}" rx="{{b.rx}}" ry="{{b.ry}}" fill="{{b.c}}" fill-opacity="{{b.o}}" style="--d: {{b.d}}; --dl: {{b.dl}}" filter="url(#wash)"></ellipse>
-          </sc-for>
-        </g>
-        <rect width="160" height="120" filter="url(#paper)"></rect>
-      </svg>
-      <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 120px; background: linear-gradient(to bottom, rgba(250, 248, 244, 0), #FAF8F4)"></div>
-      <button onClick="{{goPick}}" aria-label="Back" style="position: absolute; top: 40px; left: 16px; width: 44px; height: 44px; border-radius: 22px; border: none; background: rgba(250, 248, 244, 0.85); display: flex; align-items: center; justify-content: center; padding: 0">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2E2C29" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
-      </button>
-      <div style="position: absolute; left: 28px; right: 28px; bottom: 10px">
-        <h2 style="margin: 0; font-weight: 300; font-size: 40px; line-height: 1; letter-spacing: -0.02em">
-          <sc-for list="{{fear.lines}}" as="ln" hint-placeholder-count="2"><span style="display: block">{{ln}}</span></sc-for>
-        </h2>
-      </div>
-    </div>
-    <div style="flex-grow: 1; padding: 18px 28px 34px; display: flex; flex-direction: column">
-      <p style="margin: 0; font-weight: 300; font-size: 21px; line-height: 1.4; color: #3F3C37">{{fear.reframe}}</p>
-      <div style="width: 28px; height: 1px; background: #CFC8BC; margin: 28px 0 22px"></div>
-      <div style="display: flex; justify-content: space-between; align-items: baseline">
-        <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: #6E6962">TODAY'S DARE · 5 MIN</span>
-        <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: #6E6962">NO. {{dareNo}}</span>
-      </div>
-      <div style="margin-top: 12px; min-height: 110px; transform: translateX({{cardX}}px) rotate({{cardRot}}deg); opacity: {{cardOp}}; transition: {{cardTr}}">
-        <p style="margin: 0; font-weight: 400; font-size: 27px; line-height: 1.3; letter-spacing: -0.005em">{{dare}}</p>
-      </div>
-      <div style="margin-top: auto; display: flex; flex-direction: column; gap: 18px">
-        <div style="display: flex; align-items: center; justify-content: space-between">
-          <button onClick="{{prevDare}}" aria-label="Another dare" style="width: 44px; height: 44px; border: none; background: transparent; display: flex; align-items: center; justify-content: center; padding: 0">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2E2C29" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
-          </button>
-          <span style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: #55514B">Not this one? Swipe for another <svg class="arrow" width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="#55514B" stroke-width="1.2" stroke-linecap="round" aria-hidden="true"><path d="M1 5h11M8 1l4 4-4 4"></path></svg></span>
-          <button onClick="{{nextDare}}" aria-label="Another dare" style="width: 44px; height: 44px; border: none; background: transparent; display: flex; align-items: center; justify-content: center; padding: 0">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2E2C29" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg>
-          </button>
-        </div>
-        <button onClick="{{accept}}" style="height: 56px; border: none; border-radius: 28px; background: #2E2C29; color: #FAF8F4; font-family: 'Bitter', serif; font-size: 15px; letter-spacing: 0.02em">Begin</button>
-      </div>
-    </div>
+  <div id="treeBtns" style="margin-top:auto;display:flex;flex-direction:column;gap:6px">
+    <button id="waterBtn" data-act="water" hidden style="height:56px;border:none;border-radius:28px;background:#4E6E86;color:#F4EEE6;font-size:15px;letter-spacing:.02em;display:flex;align-items:center;justify-content:center;gap:10px">
+      <svg width="16" height="18" viewBox="0 0 16 18" fill="none" aria-hidden="true"><path d="M8 1.5C5.5 5 3 8 3 11a5 5 0 0 0 10 0c0-3-2.5-6-5-9.5z" stroke="#F4EEE6" stroke-width="1.2"/></svg>
+      Water your tree
+    </button>
+    <button id="doneBtn" class="pill" data-act="back">Back to today</button>
+    <p id="savedNote" style="margin:0;height:46px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#55514B">Your tree is saved on this device.</p>
   </div>
-</sc-if>
-
-<sc-if value="{{isTimer}}" hint-placeholder-val="{{ false }}">
-  <div class="screen" style="position: absolute; inset: 0; box-sizing: border-box; padding: 40px 26px 34px; display: flex; flex-direction: column; align-items: center">
-    <div style="align-self: stretch; display: flex; justify-content: space-between; align-items: center">
-      <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: #6E6962">{{fear.upper}}</span>
-      <button onClick="{{togglePause}}" aria-label="{{pauseLabel}}" style="width: 44px; height: 44px; border-radius: 22px; border: 1px solid #DDD6CB; background: transparent; display: flex; align-items: center; justify-content: center; padding: 0">
-        <sc-if value="{{running}}" hint-placeholder-val="{{ true }}">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2E2C29" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M8 5v14M16 5v14"></path></svg>
-        </sc-if>
-        <sc-if value="{{paused}}" hint-placeholder-val="{{ false }}">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="#2E2C29" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"></path></svg>
-        </sc-if>
-      </button>
-    </div>
-    <p style="margin: 26px 0 0; text-align: center; font-weight: 400; font-size: 20px; line-height: 1.4; max-width: 310px">{{dare}}</p>
-    <div style="position: relative; width: 280px; height: 280px; margin-top: 34px; border-radius: 140px; overflow: hidden">
-      <svg viewBox="20 0 120 120" width="280" height="280" preserveAspectRatio="xMidYMid slice" style="display: block" aria-hidden="true">
-        <rect width="160" height="120" fill="{{fear.base}}"></rect>
-        <g class="breathe" style="mix-blend-mode: multiply">
-          <sc-for list="{{fear.art}}" as="b" hint-placeholder-count="3">
-            <ellipse cx="{{b.cx}}" cy="{{b.cy}}" rx="{{b.rx}}" ry="{{b.ry}}" fill="{{b.c}}" fill-opacity="{{b.o}}" style="--d: {{b.d}}; --dl: {{b.dl}}" filter="url(#wash)"></ellipse>
-          </sc-for>
-        </g>
-        <rect width="160" height="120" filter="url(#paper)"></rect>
-      </svg>
-      <div style="position: absolute; top: 0; left: 0; right: 0; height: {{veil}}px; background: rgba(250, 248, 244, 0.9); transition: height 1000ms linear"></div>
-    </div>
-    <span style="margin-top: 26px; font-weight: 300; font-size: 56px; line-height: 1; font-variant-numeric: tabular-nums">{{clock}}</span>
-    <span style="margin-top: 10px; font-size: 12px; color: #55514B">{{clockNote}}</span>
-    <div style="margin-top: auto; align-self: stretch; display: flex; flex-direction: column; gap: 6px">
-      <button onClick="{{finish}}" style="height: 56px; border: none; border-radius: 28px; background: #2E2C29; color: #FAF8F4; font-family: 'Bitter', serif; font-size: 15px; letter-spacing: 0.02em">I made something</button>
-      <button onClick="{{goDare}}" style="height: 46px; border: none; background: transparent; color: #2E2C29; font-family: 'Bitter', serif; font-size: 14px">Not now</button>
-    </div>
-  </div>
-</sc-if>
-
-<sc-if value="{{isTree}}" hint-placeholder-val="{{ false }}">
-  <div class="screen" style="position: absolute; inset: 0; box-sizing: border-box; padding: 44px 28px 34px; display: flex; flex-direction: column">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin: 0 -4px">
-      <button onClick="{{goPick}}" aria-label="Back to today" style="height: 44px; border: none; background: transparent; padding: 0 4px; font-family: 'Bitter', serif; font-weight: 600; font-size: 20px; letter-spacing: -0.01em; color: #2E2C29">nudge</button>
-      <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: #6E6962">{{stageKicker}}</span>
-    </div>
-    <div style="position: relative; margin: 6px -28px 0; display: flex; justify-content: center">
-      <svg width="390" height="350" viewBox="-25 42 350 315" role="img" aria-label="{{treeAria}}">
-        <g style="mix-blend-mode: multiply">
-          <ellipse cx="150" cy="190" rx="150" ry="150" fill="#E6EDE5" fill-opacity="0.55" filter="url(#wash)"></ellipse>
-          <ellipse cx="208" cy="120" rx="70" ry="60" fill="#F3E6D3" fill-opacity="0.45" filter="url(#wash)"></ellipse>
-          <ellipse cx="150" cy="330" rx="140" ry="16" fill="#CDBFA8" fill-opacity="0.75" filter="url(#wash)"></ellipse>
-          <ellipse cx="128" cy="334" rx="70" ry="9" fill="#B4C9A9" fill-opacity="0.6" filter="url(#wash)"></ellipse>
-          <sc-if value="{{pouring}}" hint-placeholder-val="{{ false }}">
-            <ellipse class="soak" cx="150" cy="328" rx="70" ry="10" fill="#8E9AAF" filter="url(#wash)"></ellipse>
-          </sc-if>
-        </g>
-        <g class="sway">
-          <g style="mix-blend-mode: multiply">
-            <sc-for list="{{canopy}}" as="cw" hint-placeholder-count="3">
-              <ellipse cx="{{cw.x}}" cy="{{cw.y}}" rx="{{cw.rx}}" ry="{{cw.ry}}" fill="{{cw.c}}" fill-opacity="{{cw.o}}" filter="url(#wash)" style="transition: rx 600ms ease, ry 600ms ease"></ellipse>
-            </sc-for>
-          </g>
-          <g filter="url(#ink)">
-            <path d="M142 326 C146 292 145 252 147.5 206 L152.5 206 C155 252 154 292 158 326 Z" fill="#5C5348"></path>
-            <sc-for list="{{branches}}" as="br" hint-placeholder-count="6">
-              <path d="{{br.d}}" fill="none" stroke="{{br.c}}" stroke-width="{{br.w}}" stroke-linecap="round" opacity="{{br.op}}" style="transition: opacity 1200ms ease"></path>
-            </sc-for>
-          </g>
-          <g style="mix-blend-mode: multiply">
-            <sc-for list="{{filler}}" as="fl" hint-placeholder-count="12">
-              <ellipse class="leaf" cx="{{fl.x}}" cy="{{fl.y}}" rx="{{fl.rx}}" ry="{{fl.ry}}" fill="{{fl.c}}" fill-opacity="{{fl.op}}" style="--d: {{fl.d}}; --dl: {{fl.dl}}" filter="url(#dab)"></ellipse>
-            </sc-for>
-            <sc-for list="{{leaves}}" as="lf" hint-placeholder-count="8">
-              <ellipse class="{{lf.cls}}" cx="{{lf.x}}" cy="{{lf.y}}" rx="{{lf.rx}}" ry="{{lf.ry}}" fill="{{lf.c}}" fill-opacity="{{lf.op}}" style="--d: {{lf.d}}; --dl: {{lf.dl}}" filter="url(#dab)"></ellipse>
-            </sc-for>
-            <sc-for list="{{blossoms}}" as="bl" hint-placeholder-count="0">
-              <ellipse class="leaf" cx="{{bl.x}}" cy="{{bl.y}}" rx="4.5" ry="4.5" fill="{{bl.c}}" fill-opacity="0.9" style="--d: {{bl.d}}; --dl: {{bl.dl}}" filter="url(#dab)"></ellipse>
-            </sc-for>
-          </g>
-          <sc-for list="{{perchBirds}}" as="bd" hint-placeholder-count="2">
-            <g transform="translate({{bd.x}} {{bd.y}}) scale({{bd.sx}} {{bd.s}})" opacity="{{bd.op}}">
-              <g class="pop">
-                <g class="{{bd.anim}}" style="--dl: {{bd.dl}}">
-                  <path d="M-1.5 -0.5 v2.5 M1.8 -0.5 v2.5" stroke="#D4945A" stroke-width="0.9" stroke-linecap="round"></path>
-                  <g filter="url(#soft)">
-                    <path d="M-5 -7 Q-11 -13 -14 -14 Q-12 -7 -6 -3 Z" fill="{{bd.wing}}"></path>
-                    <ellipse cx="0" cy="-7" rx="8.2" ry="7" fill="{{bd.c}}"></ellipse>
-                    <ellipse cx="2.4" cy="-4.6" rx="5.2" ry="4.2" fill="{{bd.belly}}"></ellipse>
-                    <path d="M-6 -8.5 Q-1 -13 4 -8 Q-1 -4.5 -6 -8.5 Z" fill="{{bd.wing}}"></path>
-                    <circle cx="5.6" cy="-12" r="4.8" fill="{{bd.c}}"></circle>
-                  </g>
-                  <circle cx="7.6" cy="-10.4" r="1.4" fill="#F2A0A8" opacity="0.75"></circle>
-                  <circle cx="7" cy="-13" r="1.15" fill="#3A3430"></circle>
-                  <circle cx="7.4" cy="-13.4" r="0.4" fill="#FFFFFF"></circle>
-                  <path d="M10.2 -12.8 L13.4 -11.8 L10.2 -10.8 Z" fill="#F0A84E"></path>
-                </g>
-              </g>
-            </g>
-          </sc-for>
-        </g>
-        <sc-for list="{{flyBirds}}" as="fb" hint-placeholder-count="0">
-          <g transform="translate({{fb.x}} {{fb.y}}) scale({{fb.sx}} {{fb.s}})" opacity="{{fb.op}}">
-            <g class="pop">
-              <g class="hover" style="--dl: {{fb.dl}}">
-                <g filter="url(#soft)">
-                  <path d="M-6 0 Q-12 -3 -14 -6 Q-10 1 -5 3 Z" fill="{{fb.wing}}"></path>
-                  <ellipse cx="0" cy="0" rx="7.4" ry="5.4" fill="{{fb.c}}"></ellipse>
-                  <ellipse cx="1.6" cy="1.6" rx="4.6" ry="3" fill="{{fb.belly}}"></ellipse>
-                  <circle cx="5.8" cy="-2.6" r="4" fill="{{fb.c}}"></circle>
-                </g>
-                <path class="flap" d="M-4 -2 Q-8 -15 3 -13 Q2 -6 -4 -2 Z" fill="{{fb.wing}}"></path>
-                <circle cx="7.4" cy="-1.4" r="1.2" fill="#F2A0A8" opacity="0.75"></circle>
-                <circle cx="7" cy="-3.6" r="1" fill="#3A3430"></circle>
-                <circle cx="7.3" cy="-3.9" r="0.35" fill="#FFFFFF"></circle>
-                <path d="M9.6 -3.4 L12.6 -2.5 L9.6 -1.6 Z" fill="#F0A84E"></path>
-              </g>
-            </g>
-          </g>
-        </sc-for>
-        <sc-if value="{{pouring}}" hint-placeholder-val="{{ false }}">
-          <g style="mix-blend-mode: multiply">
-            <sc-for list="{{rain}}" as="r" hint-placeholder-count="9">
-              <ellipse class="rain" cx="{{r.x}}" cy="{{r.y}}" rx="2.2" ry="4.2" fill="#8FB0CC" fill-opacity="0.85" style="--dl: {{r.dl}}" filter="url(#dab)"></ellipse>
-            </sc-for>
-          </g>
-        </sc-if>
-      </svg>
-    </div>
-    <div class="lift" style="display: flex; flex-direction: column">
-      <h1 style="margin: 0; font-weight: 300; font-size: 44px; line-height: 1; letter-spacing: -0.02em">{{treeTitle}}</h1>
-      <p style="margin: 14px 0 0; font-size: 15px; line-height: 1.55; color: #3F3C37">{{treeNote}}</p>
-      <sc-if value="{{showSlider}}" hint-placeholder-val="{{ true }}">
-        <div style="margin-top: 16px; display: flex; flex-direction: column">
-          <div style="display: flex; justify-content: space-between; align-items: center; height: 24px">
-            <label for="peekSlider" style="font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: #6E6962">PEEK AHEAD</label>
-            <sc-if value="{{previewing}}" hint-placeholder-val="{{ false }}">
-              <button onClick="{{resetPreview}}" style="height: 32px; border: none; background: transparent; padding: 0; font-family: 'Bitter', serif; font-size: 12px; color: #2E2C29; text-decoration: underline; text-decoration-color: #CFC8BC; text-underline-offset: 4px">Back to today</button>
-            </sc-if>
-            <sc-if value="{{showPeekHint}}" hint-placeholder-val="{{ true }}">
-              <span class="pulse" style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: #55514B">Drag to see what grows <svg class="arrow" width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="#55514B" stroke-width="1.2" stroke-linecap="round" aria-hidden="true"><path d="M1 5h11M8 1l4 4-4 4"></path></svg></span>
-            </sc-if>
-          </div>
-          <div style="position: relative; height: 44px">
-            <div style="position: absolute; left: 12px; right: 12px; top: 20px; height: 4px; border-radius: 2px; background: #E6E0D6; overflow: hidden">
-              <div style="position: absolute; left: 0; top: 0; bottom: 0; width: {{viewPct}}%; background: #C9C3B9; transition: width 120ms linear"></div>
-              <div style="position: absolute; left: 0; top: 0; bottom: 0; width: {{realPct}}%; background: #6F8F6A"></div>
-            </div>
-            <sc-for list="{{ticks}}" as="tk" hint-placeholder-count="3">
-              <span style="position: absolute; top: 16px; width: 1px; height: 12px; background: #CFC8BC; left: calc(12px + (100% - 24px) * {{tk.f}})"></span>
-            </sc-for>
-            <input id="peekSlider" class="peek" type="range" min="0" max="21" step="1" value="{{sliderVal}}" onInput="{{scrub}}" onChange="{{scrub}}" aria-valuetext="{{sliderText}}" style="position: absolute; inset: 0">
-          </div>
-          <div style="display: flex; justify-content: space-between; font-size: 10px; font-weight: 700; letter-spacing: 0.04em; color: #8A847B">
-            <span>TODAY · {{leafCount}}</span><span>IN BLOOM · 21</span>
-          </div>
-        </div>
-      </sc-if>
-    </div>
-    <div style="margin-top: auto; display: flex; flex-direction: column; gap: 6px">
-      <sc-if value="{{needsWater}}" hint-placeholder-val="{{ false }}">
-        <button onClick="{{water}}" style="height: 56px; border: none; border-radius: 28px; background: #4E6E86; color: #FAF8F4; font-family: 'Bitter', serif; font-size: 15px; letter-spacing: 0.02em; display: flex; align-items: center; justify-content: center; gap: 10px">
-          <svg width="16" height="18" viewBox="0 0 16 18" fill="none" aria-hidden="true"><path d="M8 1.5C5.5 5 3 8 3 11a5 5 0 0 0 10 0c0-3-2.5-6-5-9.5z" stroke="#FAF8F4" stroke-width="1.2"></path></svg>
-          Water your tree
-        </button>
-      </sc-if>
-      <sc-if value="{{showDone}}" hint-placeholder-val="{{ true }}">
-        <button onClick="{{goPick}}" style="height: 56px; border: none; border-radius: 28px; background: #2E2C29; color: #FAF8F4; font-family: 'Bitter', serif; font-size: 15px; letter-spacing: 0.02em">{{treeCta}}</button>
-      </sc-if>
-      <sc-if value="{{showKeep}}" hint-placeholder-val="{{ true }}">
-        <button onClick="{{keep}}" style="height: 46px; border: none; background: transparent; color: #2E2C29; font-family: 'Bitter', serif; font-size: 14px; text-decoration: underline; text-decoration-color: #CFC8BC; text-underline-offset: 5px">Keep your tree with your email</button>
-      </sc-if>
-      <sc-if value="{{kept}}" hint-placeholder-val="{{ false }}">
-        <p style="margin: 0; height: 46px; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #55514B">Your tree is saved in this browser.</p>
-      </sc-if>
-    </div>
-  </div>
-</sc-if>
+</section>
 
 </div>
-</template>
+</div>
 
 <script>
-/* A small renderer for this page's template: {{holes}}, <sc-if>, <sc-for>, and a component with state.
-   It rebuilds a light description of the page on every change and patches the live page to match,
-   so elements stay in place and their transitions and drags keep working. */
 (function () {
-  var HOLE = /\{\{\s*([^}]+?)\s*\}\}/g, WHOLE = /^\s*\{\{\s*([^}]+?)\s*\}\}\s*$/;
-  function look(path, scope) {
-    if (path === 'true') return true;
-    if (path === 'false') return false;
-    if (path === 'null') return null;
-    if (/^-?\d+(\.\d+)?$/.test(path)) return Number(path);
-    var parts = path.split('.'), v = scope;
-    for (var i = 0; i < parts.length; i++) { if (v == null) return undefined; v = v[parts[i]]; }
-    return v;
+'use strict';
+// Native touch scrolling stays independent from selection and layout.
+function createNudgeScroller(el, enabled, onChange) {
+  var selected = 0, idle, pointer = null, touching = false, start = 0, origin = 0, distance = 0;
+  function clamp(index) { return Math.max(0, Math.min(Math.round((el.scrollWidth - el.clientWidth) / el.clientWidth), index)); }
+  function settle(force) {
+    if (!enabled() || (!force && (pointer !== null || touching)) || !el.clientWidth) return;
+    var next = clamp(Math.round(el.scrollLeft / el.clientWidth));
+    if (next === selected) return;
+    selected = next; onChange(next);
   }
-  function interp(str, scope) {
-    return str.replace(HOLE, function (_, p) { var v = look(p, scope); return v == null || v === false || v === true ? '' : String(v); });
+  function schedule() { clearTimeout(idle); idle = setTimeout(function () { settle(false); }, 140); }
+  function scrollTo(index, smooth) {
+    if (!el.clientWidth) return;
+    el.scrollTo({ left: clamp(index) * el.clientWidth, behavior: smooth && !matchMedia('(prefers-reduced-motion: reduce)').matches ? 'smooth' : 'instant' });
   }
-  function holeOf(val) { var m = WHOLE.exec(val || ''); return m ? m[1] : (val || ''); }
-  function kids(node, scope, out) { for (var c = node.firstChild; c; c = c.nextSibling) build(c, scope, out); }
-  function build(node, scope, out) {
-    if (node.nodeType === 3) { out.push(interp(node.data, scope)); return; }
-    if (node.nodeType !== 1) return;
-    var tag = node.localName;
-    if (tag === 'sc-if') { if (look(holeOf(node.getAttribute('value')), scope)) kids(node, scope, out); return; }
-    if (tag === 'sc-for') {
-      var list = look(holeOf(node.getAttribute('list')), scope) || [], as = node.getAttribute('as');
-      for (var i = 0; i < list.length; i++) { var sc = Object.create(scope); sc[as] = list[i]; sc.$index = i; kids(node, sc, out); }
-      return;
-    }
-    var v = { ns: node.namespaceURI, tag: tag, attrs: {}, on: {}, kids: [] };
-    for (var j = 0; j < node.attributes.length; j++) {
-      var name = node.attributes[j].name, val = node.attributes[j].value;
-      if (name.indexOf('hint-') === 0) continue;
-      var m = WHOLE.exec(val);
-      if (/^on[a-z]/i.test(name)) {
-        var fn = m ? look(m[1], scope) : null;
-        if (typeof fn === 'function') { var type = name.slice(2).toLowerCase(); if (type === 'change' && tag === 'input') type = 'input'; v.on[type] = fn; }
-        continue;
-      }
-      var r = m ? look(m[1], scope) : (val.indexOf('{{') >= 0 ? interp(val, scope) : val);
-      if (r == null || r === false) continue;
-      v.attrs[name] = r === true ? '' : String(r);
-    }
-    kids(node, scope, v.kids);
-    out.push(v);
+  el.addEventListener('scroll', schedule, { passive: true });
+  el.addEventListener('scrollend', function () { clearTimeout(idle); settle(false); });
+  el.addEventListener('touchstart', function () { touching = true; }, { passive: true });
+  ['touchend', 'touchcancel'].forEach(function (name) {
+    el.addEventListener(name, function () { touching = false; schedule(); }, { passive: true });
+  });
+  el.addEventListener('pointerdown', function (e) {
+    if (!enabled() || e.pointerType === 'touch' || e.button !== 0 || e.target.closest('button,a,input')) return;
+    pointer = e.pointerId; start = e.clientX; origin = el.scrollLeft; distance = 0;
+    el.style.scrollSnapType = 'none'; el.setPointerCapture(pointer); e.preventDefault();
+  });
+  el.addEventListener('pointermove', function (e) {
+    if (pointer !== e.pointerId) return;
+    distance = e.clientX - start;
+    el.scrollLeft = origin - distance;
+  });
+  function release(e) {
+    if (pointer !== e.pointerId) return;
+    pointer = null; el.style.scrollSnapType = '';
+    var initial = Math.round(origin / el.clientWidth), next = Math.round(el.scrollLeft / el.clientWidth);
+    if (e.type !== 'pointercancel' && next === initial && Math.abs(distance) > 40) next = initial + (distance < 0 ? 1 : -1);
+    scrollTo(next, true); schedule();
   }
-  function dispatch(e) { var fn = e.currentTarget.__on && e.currentTarget.__on[e.type]; if (fn) fn(e); }
-  function update(el, v) {
-    var old = el.__a || {}, k;
-    for (k in old) if (!(k in v.attrs)) el.removeAttribute(k);
-    for (k in v.attrs) if (old[k] !== v.attrs[k]) {
-      el.setAttribute(k, v.attrs[k]);
-      if (k === 'value' && 'value' in el && el.value !== v.attrs[k]) el.value = v.attrs[k];
-    }
-    el.__a = v.attrs;
-    var seen = el.__t || (el.__t = {});
-    for (var t in v.on) if (!seen[t]) { el.addEventListener(t, dispatch); seen[t] = true; }
-    el.__on = v.on;
-  }
-  function create(v) {
-    if (typeof v === 'string') return document.createTextNode(v);
-    var el = document.createElementNS(v.ns, v.tag);
-    update(el, v);
-    for (var i = 0; i < v.kids.length; i++) el.appendChild(create(v.kids[i]));
-    return el;
-  }
-  function patch(parent, list) {
-    var cur = parent.firstChild;
-    for (var i = 0; i < list.length; i++) {
-      var v = list[i], n;
-      if (!cur) { parent.appendChild(create(v)); continue; }
-      if (typeof v === 'string') {
-        if (cur.nodeType === 3) { if (cur.data !== v) cur.data = v; }
-        else { n = create(v); parent.replaceChild(n, cur); cur = n; }
-      } else if (cur.nodeType === 1 && cur.__a && cur.localName === v.tag && cur.namespaceURI === v.ns) {
-        update(cur, v); patch(cur, v.kids);
-      } else { n = create(v); parent.replaceChild(n, cur); cur = n; }
-      cur = cur.nextSibling;
-    }
-    while (cur) { var nx = cur.nextSibling; parent.removeChild(cur); cur = nx; }
-  }
-  var queued = false, inst = null, root = null, tpl = null;
-  function render() {
-    queued = false;
-    var out = [];
-    kids(tpl, inst.renderVals(), out);
-    patch(root, out);
-  }
-  function sched() { if (!queued) { queued = true; Promise.resolve().then(render); } }
-  window.DCLogic = class {
-    constructor(props) { this.props = props || {}; }
-    setState(u, cb) {
-      if (typeof u === 'function') u = u(this.state, this.props);
-      this.state = Object.assign({}, this.state, u);
-      sched();
-      if (cb) Promise.resolve().then(cb);
-    }
-    forceUpdate() { sched(); }
+  el.addEventListener('pointerup', release);
+  el.addEventListener('pointercancel', release);
+  el.addEventListener('click', function (e) {
+    if (enabled() && Math.abs(distance) > 8) { e.preventDefault(); e.stopPropagation(); distance = 0; }
+  }, true);
+  return {
+    set: function (index, smooth) { clearTimeout(idle); selected = index; scrollTo(index, smooth); },
+    to: function (index) { scrollTo(index, true); },
+    flush: function () { clearTimeout(idle); settle(true); }
   };
-  window.mountDC = function (Comp, rootEl, tplEl) {
-    root = rootEl; tpl = tplEl.content; inst = new Comp({});
-    render();
-    if (inst.componentDidMount) inst.componentDidMount();
-    window.addEventListener('pagehide', function () { if (inst.componentWillUnmount) inst.componentWillUnmount(); });
-    return inst;
-  };
-})();
-</script>
-<script>
+}
 var EN = 0;
 function E(cx, cy, rx, ry, c, o) { EN++; return { cx: cx, cy: cy, rx: rx, ry: ry, c: c, o: o, d: (8 + (EN * 3) % 7) + 's', dl: (-((EN * 5) % 9)) + 's' }; }
 
@@ -594,9 +436,8 @@ var FEARS = [
     reframe: 'Start in the middle. The beginning can wait.',
     dares: ['Draw a shape. Answer it with another.', 'Draw only the shadow of the third thing you see.', 'Wet the page. Drop in one color. Begin there.', 'Begin with a single dot. Let it grow.', 'Pick a color. Paint until it changes your mind.'] }
 ];
-var ANY = { id: 'any', lines: ['Choose', 'for me.'], hint: "Not sure what it is today? That's allowed too.", fact: 'Naming a feeling, even roughly, tends to make it smaller.' };
+var ANY = { lines: ['Choose', 'for me.'], hint: "Not sure what it is today? That's allowed too.", fact: 'Naming a feeling, even roughly, tends to make it smaller.' };
 
-// The tree: branches appear by stage, leaves fill slots in order.
 var BRANCHES = [
   { s: 1, w: 4, d: 'M150 208 C150 182 146 162 148 140' },
   { s: 1, w: 3.2, d: 'M149 252 C130 242 116 232 104 214' },
@@ -616,24 +457,21 @@ var SLOTS = [
 ];
 var TREE_SIZE = 21;
 var STAGES = [
-  { upTo: 7, name: 'SEEDLING', title: 'Seedling.' },
-  { upTo: 14, name: 'TAKING ROOT', title: 'Taking root.' },
-  { upTo: 20, name: 'BRANCHING', title: 'Branching out.' },
-  { upTo: 21, name: 'IN BLOOM', title: 'In bloom.' }
+  { upTo: 7, title: 'Seedling.' },
+  { upTo: 14, title: 'Taking root.' },
+  { upTo: 20, title: 'Branching out.' },
+  { upTo: 21, title: 'In bloom.' }
 ];
-var STAGE_START = [0, 7, 14, 20];
-var SEED = ['start', 'time', 'better', 'ruin', 'tired', 'enough', 'point', 'ruin', 'start', 'better'];
 var RAIN = [[132, 60, 0], [150, 40, 0.15], [168, 70, 0.3], [140, 90, 0.45], [160, 52, 0.6], [124, 76, 0.75], [176, 46, 0.9], [146, 66, 1.05], [156, 84, 1.2]];
-// Birds arrive as the tree grows (t = leaves needed).
 var PLUM = {
-  peach:  { c: '#EDAE84', belly: '#F9E2CC', wing: '#D98E62' },
-  blue:   { c: '#94B8DC', belly: '#EAF1F8', wing: '#7099C2' },
+  peach: { c: '#EDAE84', belly: '#F9E2CC', wing: '#D98E62' },
+  blue: { c: '#94B8DC', belly: '#EAF1F8', wing: '#7099C2' },
   yellow: { c: '#F1CD6C', belly: '#FCEFC2', wing: '#D9AF48' },
-  pink:   { c: '#EBA8BA', belly: '#FBE6EC', wing: '#D2879D' },
-  sage:   { c: '#A3C49F', belly: '#E9F2E3', wing: '#7FA57C' },
-  coral:  { c: '#EA9583', belly: '#FBE1DA', wing: '#CF7563' },
-  lilac:  { c: '#BCACDB', belly: '#EFEAF7', wing: '#9A88C2' },
-  teal:   { c: '#86C2B8', belly: '#E5F3F0', wing: '#5FA095' }
+  pink: { c: '#EBA8BA', belly: '#FBE6EC', wing: '#D2879D' },
+  sage: { c: '#A3C49F', belly: '#E9F2E3', wing: '#7FA57C' },
+  coral: { c: '#EA9583', belly: '#FBE1DA', wing: '#CF7563' },
+  lilac: { c: '#BCACDB', belly: '#EFEAF7', wing: '#9A88C2' },
+  teal: { c: '#86C2B8', belly: '#E5F3F0', wing: '#5FA095' }
 };
 var BIRDS = [
   { t: 4, kind: 'perch', x: 104, y: 211, s: 0.8, p: 'peach' },
@@ -651,7 +489,6 @@ var BIRDS = [
   { t: 21, kind: 'fly', x: 36, y: 152, s: 0.8, p: 'lilac' },
   { t: 21, kind: 'ground', x: 178, y: 329, s: 0.9, p: 'sage', flip: true }
 ];
-// Canopy filler: a golden-angle spiral, so the tree fills from the center outward.
 var FILL = [];
 for (var fi = 0; fi < 54; fi++) {
   var fa = fi * 2.39996, fr = Math.sqrt((fi + 0.5) / 54);
@@ -659,277 +496,476 @@ for (var fi = 0; fi < 54; fi++) {
 }
 var GREENS = ['#A9C39A', '#C2D5AF', '#93B48C', '#B8CFA0'];
 var BLOSSOMS = [[100, 204], [190, 184], [144, 130], [114, 120], [204, 140], [128, 92], [182, 100], [92, 140], [222, 194], [150, 166]];
-var TOTAL = 300;
-var W = 390;
+var TOTAL = 300, W = 390, KEY = 'nudgeTreeV1';
 
-var NUDGE_KEY = 'nudge.leaves.v1';
+function $(id) { return document.getElementById(id); }
+function fearOf(id) { return FEARS.filter(function (f) { return f.id === id; })[0]; }
 function loadLeaves() {
   try {
-    var v = JSON.parse(localStorage.getItem(NUDGE_KEY) || '[]');
-    return Array.isArray(v) ? v.filter(function (x) { return typeof x === 'string'; }) : [];
-  } catch (e) { return []; }
+    var a = JSON.parse(localStorage.getItem(KEY) || '[]');
+    if (Array.isArray(a)) return a.filter(function (id) { return ART[id]; }).slice(0, 60);
+  } catch (e) {}
+  return [];
 }
-function saveLeaves(l) { try { localStorage.setItem(NUDGE_KEY, JSON.stringify(l)); } catch (e) {} }
+function saveLeaves() { try { localStorage.setItem(KEY, JSON.stringify(S.leaves)); } catch (e) {} }
 
-class Component extends DCLogic {
-  constructor(props) {
-    super(props);
-    this.state = { screen: 'pick', idx: 0, drag: 0, dragging: false, swiped: false,
-      fearId: 'ruin', dareIdx: 0, dareNo: 1, cardX: 0, cardOp: 1, cardTr: 'transform 260ms ease, opacity 260ms ease',
-      remaining: TOTAL, running: false, leaves: loadLeaves(), phase: 'idle', kept: false, preview: null, demoed: false, touched: false };
-  }
-  componentWillUnmount() { this.stop(); this.stopDemo(); clearTimeout(this.t1); clearTimeout(this.t2); clearTimeout(this.t3); }
-  stopDemo() { if (this.d1) { clearInterval(this.d1); this.d1 = null; } clearTimeout(this.d0); clearTimeout(this.d2); }
-  demo() {
-    if (this.state.demoed || this.state.touched) return;
-    var self = this, v = this.state.leaves.length;
-    this.stopDemo();
-    this.setState({ demoed: true });
-    this.d1 = setInterval(function () {
-      v++;
-      if (v > TREE_SIZE) {
-        clearInterval(self.d1); self.d1 = null;
-        self.d2 = setTimeout(function () { self.setState({ preview: null }); }, 2200);
-        return;
-      }
-      self.setState({ preview: v });
-    }, 140);
-  }
-  stop() { if (this.timer) { clearInterval(this.timer); this.timer = null; } }
-  start() {
-    this.stop();
-    this.timer = setInterval(() => {
-      var r = this.state.remaining - 1;
-      if (r <= 0) { this.stop(); this.setState({ remaining: 0, running: false }); }
-      else { this.setState({ remaining: r }); }
-    }, 1000);
-    this.setState({ running: true });
-  }
-  go(i) {
-    var n = FEARS.length + 1;
-    this.setState({ idx: Math.max(0, Math.min(n - 1, i)), drag: 0, swiped: true });
-  }
-  pickFear(id) {
-    this.stop();
-    var f = FEARS.find(function (x) { return x.id === id; });
-    this.setState({ screen: 'dare', fearId: id, dareIdx: Math.floor(Math.random() * f.dares.length), dareNo: 1, cardX: 0, cardOp: 1, remaining: TOTAL, running: false, phase: 'idle' });
-  }
-  swapDare(dir) {
-    var self = this, f = FEARS.find(function (x) { return x.id === self.state.fearId; });
-    clearTimeout(this.t1); clearTimeout(this.t2);
-    this.setState({ cardX: dir * -420, cardOp: 0, cardTr: 'transform 240ms ease-in, opacity 240ms ease-in' });
-    this.t1 = setTimeout(function () {
-      var next = self.state.dareIdx;
-      while (next === self.state.dareIdx) next = Math.floor(Math.random() * f.dares.length);
-      self.setState({ dareIdx: next, dareNo: self.state.dareNo + 1, cardX: dir * 80, cardOp: 0, cardTr: 'none' });
-      self.t2 = setTimeout(function () { self.setState({ cardX: 0, cardOp: 1, cardTr: 'transform 380ms cubic-bezier(.2,.8,.3,1), opacity 380ms ease' }); }, 30);
-    }, 240);
-  }
-  stageIndex(n) { for (var i = 0; i < STAGES.length; i++) if (n <= STAGES[i].upTo) return i; return STAGES.length - 1; }
-  renderVals() {
-    var s = this.state, self = this;
-    var nPanels = FEARS.length + 1;
-    var f0 = FEARS.find(function (x) { return x.id === s.fearId; });
-    var a0 = ART[f0.id];
+var S = { screen: 'pick', idx: 0, fearId: 'ruin', dareIdx: 0, dareNo: 1, remaining: TOTAL, running: false,
+  leaves: loadLeaves(), phase: 'idle', preview: null, demoed: false, touched: false, swiped: false };
+var timer = null, t1, t2, t3, d0, d1, d2, moved = false, active = false, x0 = 0, drag = 0, dragging = false, K = 1;
 
-    var drag = s.drag;
-    if ((s.idx === 0 && drag > 0) || (s.idx === nPanels - 1 && drag < 0)) drag = drag / 3;
+/* ---------- shared art ---------- */
+function blobs(list) {
+  return list.map(function (b) {
+    return '<ellipse cx="' + b.cx + '" cy="' + b.cy + '" rx="' + b.rx + '" ry="' + b.ry + '" fill="' + b.c + '" fill-opacity="' + b.o + '" style="--d:' + b.d + ';--dl:' + b.dl + '" filter="url(#wash)"/>';
+  }).join('');
+}
+function artSvg(base, list, cls, dur) {
+  return '<rect width="160" height="120" fill="' + base + '"/><g class="' + (cls || '') + '" style="mix-blend-mode:multiply' + (dur ? ';animation-duration:' + dur : '') + '">' + blobs(list) + '</g><rect width="160" height="120" filter="url(#paper)"/>';
+}
 
-    var panels = FEARS.map(function (f, i) {
-      var a = ART[f.id];
-      return { lines: f.lines, hint: f.hint, fact: f.fact, base: a.base, art: a.art, dur: a.dur, cls: i === s.idx ? 'breathe' : '' };
-    }).concat([{ lines: ANY.lines, hint: ANY.hint, fact: ANY.fact, base: '#F4EFE6', art: ANY_ART, dur: '12s', cls: s.idx === nPanels - 1 ? 'breathe' : '' }]);
+/* ---------- pick ---------- */
+var PANELS = FEARS.map(function (f) {
+  var a = ART[f.id];
+  return { lines: f.lines, hint: f.hint, fact: f.fact, base: a.base, art: a.art, dur: a.dur };
+}).concat([{ lines: ANY.lines, hint: ANY.hint, fact: ANY.fact, base: '#F4EFE6', art: ANY_ART, dur: '12s' }]);
+var N = PANELS.length;
 
-    var count = s.leaves.length;
-    var si = this.stageIndex(Math.max(1, count + (s.phase === 'ready' ? 1 : 0)));
-    var canPeek = s.phase !== 'ready' && s.phase !== 'pouring';
-    var previewing = canPeek && s.preview != null && s.preview > count;
-    var view = previewing ? s.preview : count;
-    var sv = previewing ? this.stageIndex(view) : si;
-    var leaves = [];
-    for (var li = 0; li < Math.min(view, TREE_SIZE); li++) {
-      var slot = SLOTS[li], real = li < count, fresh = s.phase === 'grown' && li === count - 1, tall = li % 2 === 0;
-      leaves.push({ c: real ? ART[s.leaves[li]].ink : '#BDB8B0', op: real ? 0.8 : 0.6, x: slot[0], y: slot[1], rx: tall ? 9 : 11, ry: tall ? 11 : 8,
-        cls: fresh ? 'leaf grow' : 'leaf', d: (7 + (li * 3) % 6) + 's', dl: (-((li * 7) % 9)) + 's' });
+$('track').innerHTML = PANELS.map(function (p, i) {
+  return '<div class="panel">' +
+    '<svg viewBox="0 0 160 120" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' + artSvg(p.base, p.art, '', p.dur) + '</svg>' +
+    '<div class="abs pgrad" style="left:0;right:0;bottom:0;height:520px;background:linear-gradient(to bottom,rgba(250,248,244,0),rgba(250,248,244,.82) 55%,rgba(250,248,244,.94))"></div>' +
+    '<div class="abs ptext" style="left:28px;right:28px;bottom:var(--txtB,196px);display:flex;flex-direction:column">' +
+    '<h1 class="ph1" style="margin:0;font-weight:300;font-size:64px;line-height:.98;letter-spacing:-.025em">' + p.lines.map(function (l) { return '<span style="display:block">' + l + '</span>'; }).join('') + '</h1>' +
+    '<p class="pp" style="margin:22px 0 0;font-weight:400;font-size:16px;line-height:1.5;color:#3F3C37;max-width:300px">' + p.hint + '</p>' +
+    '<div style="margin-top:22px;display:flex;gap:10px;align-items:baseline"><span style="flex-shrink:0" class="kick">WORTH KNOWING</span><span style="font-size:13px;font-style:italic;font-weight:300;line-height:1.5;color:#3F3C37">' + p.fact + '</span></div>' +
+    '</div></div>';
+}).join('');
+$('dots').innerHTML = PANELS.map(function (p, i) { return '<button type="button" class="page-dot" data-act="page" data-index="' + i + '" aria-label="' + (i + 1) + ' of ' + N + '"><span aria-hidden="true"></span></button>'; }).join('');
+
+function updatePick() {
+  var tr = $('track');
+  var d = drag;
+  if ((S.idx === 0 && d > 0) || (S.idx === N - 1 && d < 0)) d = d / 3;
+  var native = innerWidth < 768;
+  tr.style.transition = native || dragging ? 'none' : 'transform 520ms cubic-bezier(.2,.8,.25,1)';
+  tr.style.transform = native ? 'none' : 'translateX(' + (-S.idx * W + d) + 'px)';
+  var panels = tr.children;
+  for (var i = 0; i < panels.length; i++) {
+    var g = panels[i].querySelector('svg > g');
+    if (g) g.setAttribute('class', i === S.idx ? 'breathe' : '');
+  }
+  var dots = $('dots').children;
+  for (var j = 0; j < dots.length; j++) {
+    dots[j].firstElementChild.style.width = (j === S.idx ? 18 : 5) + 'px';
+    dots[j].firstElementChild.style.background = j === S.idx ? '#2E2C29' : 'rgba(46,44,41,.25)';
+    dots[j].setAttribute('aria-current', j === S.idx ? 'true' : 'false');
+  }
+  if (native && $('pickArt').getAttribute('data-index') !== String(S.idx)) {
+    var background = PANELS[S.idx];
+    $('pickArt').innerHTML = artSvg(background.base, background.art, 'breathe', background.dur);
+    $('pickArt').setAttribute('data-index', S.idx);
+  }
+  $('dots').setAttribute('aria-label', (S.idx + 1) + ' of ' + N);
+  $('prevBtn').style.opacity = S.idx === 0 ? 0.25 : 1;
+  $('nextBtn').style.opacity = S.idx === N - 1 ? 0.25 : 1;
+  $('edgeL').style.opacity = S.idx === 0 ? 0.3 : 1;
+  $('edgeR').style.opacity = S.idx === N - 1 ? 0.3 : 1;
+  $('chooseBtn').textContent = S.idx === N - 1 ? 'Surprise me' : 'This is it';
+  $('swipeHint').hidden = S.swiped;
+  if (S.swiped) $('hintwrap').classList.remove('hint');
+  $('leafCount').textContent = S.leaves.length;
+  $('treeBtn').setAttribute('aria-label', 'Your tree, ' + S.leaves.length + (S.leaves.length === 1 ? ' leaf' : ' leaves'));
+}
+function go(i) {
+  S.idx = Math.max(0, Math.min(N - 1, i)); drag = 0; S.swiped = true; updatePick();
+  if (innerWidth < 768) pickScroller.set(S.idx, true);
+}
+
+/* ---------- screens ---------- */
+function show(name) {
+  ['pick', 'dare', 'timer', 'tree'].forEach(function (n) {
+    var el = $('s-' + n);
+    el.hidden = n !== name;
+    el.classList.remove('in');
+  });
+  var cur = $('s-' + name);
+  void cur.offsetWidth;
+  if (name !== 'tree') cur.classList.add('in');
+  S.screen = name;
+}
+function stopTimer() { if (timer) { clearInterval(timer); timer = null; } }
+function stopDemo() { if (d1) { clearInterval(d1); d1 = null; } clearTimeout(d0); clearTimeout(d2); }
+
+function goPick() {
+  stopTimer(); stopDemo(); S.phase = 'idle'; S.preview = null; show('pick'); updatePick();
+  if (innerWidth < 768) pickScroller.set(S.idx);
+}
+
+/* ---------- dare ---------- */
+var card = $('card');
+function setCard(x, o) { card.style.transform = 'translateX(' + x + 'px) rotate(' + (x / 60) + 'deg)'; card.style.opacity = o; }
+function pickFear(id) {
+  stopTimer();
+  var f = fearOf(id), a = ART[id];
+  S.fearId = id; S.dareIdx = Math.floor(Math.random() * f.dares.length); S.dareNo = 1;
+  S.remaining = TOTAL; S.running = false; S.phase = 'idle';
+  $('dareArt').innerHTML = artSvg(a.base, a.art, 'breathe');
+  $('dareTitle').innerHTML = f.lines.map(function (l) { return '<span style="display:block">' + l + '</span>'; }).join('');
+  $('reframe').textContent = f.reframe;
+  $('dareText').textContent = f.dares[S.dareIdx];
+  $('dareNo').textContent = 1;
+  card.style.transition = 'none'; setCard(0, 1);
+  show('dare');
+  refreshDareSwipe();
+}
+function swapDare(dir) {
+  if (innerWidth < 768) { dareScroller.to(dir < 0 ? 0 : 2); return; }
+  var f = fearOf(S.fearId);
+  clearTimeout(t1); clearTimeout(t2);
+  card.style.transition = 'transform 240ms ease-in, opacity 240ms ease-in';
+  setCard(dir * -420, 0);
+  t1 = setTimeout(function () {
+    var next = S.dareIdx;
+    while (next === S.dareIdx) next = Math.floor(Math.random() * f.dares.length);
+    S.dareIdx = next; S.dareNo++;
+    $('dareText').textContent = f.dares[next];
+    $('dareNo').textContent = S.dareNo;
+    card.style.transition = 'none'; setCard(dir * 80, 0);
+    t2 = setTimeout(function () {
+      card.style.transition = 'transform 380ms cubic-bezier(.2,.8,.3,1), opacity 380ms ease';
+      setCard(0, 1);
+    }, 30);
+  }, 240);
+}
+
+/* ---------- timer ---------- */
+function updateClock() {
+  var m = Math.floor(S.remaining / 60), s = S.remaining % 60;
+  $('clock').textContent = m + ':' + (s < 10 ? '0' : '') + s;
+  $('veil').style.height = Math.round(280 * S.remaining / TOTAL) + 'px';
+  $('clockNote').textContent = S.remaining === 0 ? "Time's up. How did it go?" : (S.running ? 'The color fills in as you work' : 'Paused');
+  $('icPause').hidden = !S.running;
+  $('icPlay').hidden = S.running;
+  $('pauseBtn').setAttribute('aria-label', S.running ? 'Pause timer' : 'Resume timer');
+}
+function startTimer() {
+  stopTimer();
+  timer = setInterval(function () {
+    S.remaining--;
+    if (S.remaining <= 0) { S.remaining = 0; S.running = false; stopTimer(); }
+    updateClock();
+  }, 1000);
+  S.running = true; updateClock();
+}
+function begin() {
+  var f = fearOf(S.fearId), a = ART[S.fearId];
+  S.remaining = TOTAL;
+  $('timerFear').textContent = f.label.toUpperCase();
+  $('timerDare').textContent = f.dares[S.dareIdx];
+  $('timerArt').innerHTML = artSvg(a.base, a.art, 'breathe');
+  $('veil').style.transition = 'none'; $('veil').style.height = '280px'; void $('veil').offsetWidth; $('veil').style.transition = 'height 1000ms linear';
+  show('timer');
+  startTimer();
+}
+
+/* ---------- tree (built once, updated in place) ---------- */
+function birdMarkup(b, i) {
+  var pl = PLUM[b.p], sx = (b.flip ? -1 : 1) * b.s;
+  var inner;
+  if (b.kind === 'fly') {
+    inner = '<g class="hover" style="--dl:' + (-(i * 1.3)) + 's"><g filter="url(#soft)"><path d="M-6 0 Q-12 -3 -14 -6 Q-10 1 -5 3 Z" fill="' + pl.wing + '"/><ellipse cx="0" cy="0" rx="7.4" ry="5.4" fill="' + pl.c + '"/><ellipse cx="1.6" cy="1.6" rx="4.6" ry="3" fill="' + pl.belly + '"/><circle cx="5.8" cy="-2.6" r="4" fill="' + pl.c + '"/></g>' +
+      '<path class="flap" d="M-4 -2 Q-8 -15 3 -13 Q2 -6 -4 -2 Z" fill="' + pl.wing + '"/><circle cx="7.4" cy="-1.4" r="1.2" fill="#F2A0A8" opacity=".75"/><circle cx="7" cy="-3.6" r="1" fill="#3A3430"/><circle cx="7.3" cy="-3.9" r=".35" fill="#fff"/><path d="M9.6 -3.4 L12.6 -2.5 L9.6 -1.6 Z" fill="#F0A84E"/></g>';
+  } else {
+    inner = '<g class="' + (b.kind === 'ground' ? 'peck' : 'hop') + '" style="--dl:' + (-(i * 1.3)) + 's"><path d="M-1.5 -.5 v2.5 M1.8 -.5 v2.5" stroke="#D4945A" stroke-width=".9" stroke-linecap="round"/><g filter="url(#soft)"><path d="M-5 -7 Q-11 -13 -14 -14 Q-12 -7 -6 -3 Z" fill="' + pl.wing + '"/><ellipse cx="0" cy="-7" rx="8.2" ry="7" fill="' + pl.c + '"/><ellipse cx="2.4" cy="-4.6" rx="5.2" ry="4.2" fill="' + pl.belly + '"/><path d="M-6 -8.5 Q-1 -13 4 -8 Q-1 -4.5 -6 -8.5 Z" fill="' + pl.wing + '"/><circle cx="5.6" cy="-12" r="4.8" fill="' + pl.c + '"/></g>' +
+      '<circle cx="7.6" cy="-10.4" r="1.4" fill="#F2A0A8" opacity=".75"/><circle cx="7" cy="-13" r="1.15" fill="#3A3430"/><circle cx="7.4" cy="-13.4" r=".4" fill="#fff"/><path d="M10.2 -12.8 L13.4 -11.8 L10.2 -10.8 Z" fill="#F0A84E"/></g>';
+  }
+  return '<g class="bird" data-i="' + i + '" style="display:none" transform="translate(' + b.x + ' ' + b.y + ') scale(' + sx + ' ' + b.s + ')"><g class="pop">' + inner + '</g></g>';
+}
+function ell(cls, cx, cy, rx, ry, extra) { return '<ellipse class="' + cls + '" cx="' + cx + '" cy="' + cy + '" rx="' + rx + '" ry="' + ry + '" ' + (extra || '') + '/>'; }
+
+var perch = BIRDS.map(function (b, i) { return b.kind !== 'fly' ? birdMarkup(b, i) : ''; }).join('');
+var fly = BIRDS.map(function (b, i) { return b.kind === 'fly' ? birdMarkup(b, i) : ''; }).join('');
+$('treeSvg').innerHTML =
+  '<g style="mix-blend-mode:multiply">' +
+  '<ellipse cx="150" cy="190" rx="150" ry="150" fill="#E6EDE5" fill-opacity=".55" filter="url(#wash)"/>' +
+  '<ellipse cx="208" cy="120" rx="70" ry="60" fill="#F3E6D3" fill-opacity=".45" filter="url(#wash)"/>' +
+  '<ellipse cx="150" cy="330" rx="140" ry="16" fill="#CDBFA8" fill-opacity=".75" filter="url(#wash)"/>' +
+  '<ellipse cx="128" cy="334" rx="70" ry="9" fill="#B4C9A9" fill-opacity=".6" filter="url(#wash)"/>' +
+  '<ellipse id="soak" class="soak" cx="150" cy="328" rx="70" ry="10" fill="#8E9AAF" filter="url(#wash)" style="display:none"/>' +
+  '</g>' +
+  '<g class="sway">' +
+  '<g id="canopy" style="mix-blend-mode:multiply"><ellipse cx="152" cy="162" rx="0" ry="0" fill="#CFE0C2" filter="url(#wash)"/><ellipse cx="126" cy="150" rx="0" ry="0" fill="#E3E9C8" filter="url(#wash)"/><ellipse cx="182" cy="140" rx="0" ry="0" fill="#C9DCCB" filter="url(#wash)"/></g>' +
+  '<g filter="url(#ink)"><path d="M142 326 C146 292 145 252 147.5 206 L152.5 206 C155 252 154 292 158 326 Z" fill="#5C5348"/>' +
+  BRANCHES.map(function (b) { return '<path class="br" d="' + b.d + '" fill="none" stroke="#C4BDB3" stroke-width="' + b.w + '" stroke-linecap="round" opacity="0" style="transition:opacity 1200ms ease"/>'; }).join('') + '</g>' +
+  '<g style="mix-blend-mode:multiply">' +
+  FILL.map(function (p, i) { var t = i % 3 === 0; return ell('leaf fl', p[0].toFixed(1), p[1].toFixed(1), t ? 6 : 8, t ? 8 : 5.5, 'filter="url(#dab)" style="display:none;--d:' + (8 + (i * 5) % 6) + 's;--dl:' + (-((i * 3) % 10)) + 's"'); }).join('') +
+  SLOTS.map(function (p, i) { var t = i % 2 === 0; return ell('leaf lf', p[0], p[1], t ? 9 : 11, t ? 11 : 8, 'filter="url(#dab)" style="display:none;--d:' + (7 + (i * 3) % 6) + 's;--dl:' + (-((i * 7) % 9)) + 's"'); }).join('') +
+  BLOSSOMS.map(function (p, i) { return ell('leaf bl', p[0], p[1], 4.5, 4.5, 'filter="url(#dab)" style="display:none;--d:' + (6 + i % 4) + 's;--dl:' + (-i) + 's"'); }).join('') +
+  '</g>' + perch + '</g>' + fly +
+  '<g id="rainG" style="mix-blend-mode:multiply;display:none">' + RAIN.map(function (r) { return ell('rain', r[0], r[1], 2.2, 4.2, 'fill="#8FB0CC" fill-opacity=".85" filter="url(#dab)" style="--dl:' + r[2] + 's"'); }).join('') + '</g>';
+
+var tSvg = $('treeSvg');
+var elFill = tSvg.querySelectorAll('.fl'), elLeaf = tSvg.querySelectorAll('.lf'), elBl = tSvg.querySelectorAll('.bl');
+var elBr = tSvg.querySelectorAll('.br'), elBird = tSvg.querySelectorAll('.bird'), elCan = $('canopy').children;
+
+function stageIndex(n) { for (var i = 0; i < STAGES.length; i++) if (n <= STAGES[i].upTo) return i; return STAGES.length - 1; }
+function plural(n, one, many) { return n + ' ' + (n === 1 ? one : many); }
+
+function updateTree() {
+  var count = S.leaves.length;
+  var si = stageIndex(Math.max(1, count + (S.phase === 'ready' ? 1 : 0)));
+  var canPeek = S.phase !== 'ready' && S.phase !== 'pouring';
+  var previewing = canPeek && S.preview != null && S.preview > count;
+  var view = previewing ? S.preview : count;
+  var sv = previewing ? stageIndex(view) : si;
+  var i, el;
+
+  for (i = 0; i < elLeaf.length; i++) {
+    el = elLeaf[i];
+    var on = i < view, real = i < count, fresh = S.phase === 'grown' && i === count - 1;
+    el.style.display = on ? '' : 'none';
+    el.setAttribute('fill', real ? ART[S.leaves[i]].ink : '#BDB8B0');
+    el.setAttribute('fill-opacity', real ? 0.8 : 0.6);
+    el.classList.toggle('grow', fresh);
+  }
+  for (i = 0; i < elBr.length; i++) {
+    var b = BRANCHES[i];
+    elBr[i].setAttribute('opacity', b.s <= sv + 1 ? 1 : 0);
+    elBr[i].setAttribute('stroke', b.s <= si + 1 ? '#5C5348' : '#C4BDB3');
+  }
+  for (i = 0; i < elBird.length; i++) {
+    var bd = BIRDS[i];
+    elBird[i].style.display = view >= bd.t ? '' : 'none';
+    elBird[i].setAttribute('opacity', count >= bd.t ? 1 : 0.72);
+  }
+  var fillN = Math.min(FILL.length, Math.round(view * 2.6)), fillReal = Math.round(count * 2.6);
+  for (i = 0; i < elFill.length; i++) {
+    el = elFill[i];
+    el.style.display = i < fillN ? '' : 'none';
+    el.setAttribute('fill', i < fillReal ? GREENS[i % 4] : '#D4D0C9');
+    el.setAttribute('fill-opacity', i < fillReal ? 0.55 : 0.5);
+  }
+  var gf = view / TREE_SIZE;
+  var can = [[22, 74, 18, 62, 0.3, 0.3], [10, 40, 8, 34, 0.25, 0.25], [10, 38, 8, 30, 0.25, 0.25]];
+  for (i = 0; i < 3; i++) {
+    var c = can[i];
+    elCan[i].setAttribute('rx', gf > 0 ? Math.round(c[0] + c[1] * gf) : 0);
+    elCan[i].setAttribute('ry', gf > 0 ? Math.round(c[2] + c[3] * gf) : 0);
+    elCan[i].setAttribute('fill-opacity', c[4] + c[5] * gf);
+  }
+  for (i = 0; i < elBl.length; i++) {
+    elBl[i].style.display = view >= TREE_SIZE ? '' : 'none';
+    elBl[i].setAttribute('fill', count >= TREE_SIZE ? '#E9A3B5' : '#D2CDC6');
+    elBl[i].setAttribute('fill-opacity', 0.9);
+  }
+  var pouring = S.phase === 'pouring';
+  $('soak').style.display = pouring ? '' : 'none';
+  $('rainG').style.display = pouring ? '' : 'none';
+
+  var left = Math.max(0, TREE_SIZE - count), title, note;
+  if (S.phase === 'ready') { title = 'Time to water.'; note = 'You did the dare. Give your tree a little water and see what grows.'; }
+  else if (pouring) { title = 'Watering…'; note = 'Let it soak in.'; }
+  else if (S.phase === 'grown') { title = 'A new leaf.'; note = '“' + fearOf(S.fearId).label + '” became something growing. ' + (left ? left + ' more and your tree is in full bloom.' : 'Your tree is in full bloom.'); }
+  else if (count === 0) { title = 'Seedling.'; note = 'Your tree starts here. Make something small, even a little, and it grows its first leaf. ' + TREE_SIZE + ' leaves and it blooms.'; }
+  else { title = STAGES[si].title; note = plural(count, 'leaf', 'leaves') + ', one for every time you made something anyway. ' + (left ? left + ' more until it blooms.' : 'It is in full bloom.'); }
+  if (previewing) {
+    var ahead = view - count;
+    title = STAGES[sv].title;
+    note = view >= TREE_SIZE
+      ? 'Where this is going: a tree in full bloom, and birds that come to stay. ' + ahead + ' more dares.'
+      : ahead + (ahead === 1 ? ' more dare' : ' more dares') + ' from now. The gray leaves are waiting for you.';
+  }
+  $('treeTitle').textContent = title;
+  $('treeNote').textContent = note;
+  $('kicker').textContent = (previewing ? 'PREVIEW · ' : '') + 'STAGE ' + (sv + 1) + ' OF 4';
+  tSvg.setAttribute('aria-label', 'Your tree, with ' + plural(count, 'leaf', 'leaves') + (previewing ? ', previewing ' + view : ''));
+
+  $('sliderBox').hidden = !canPeek;
+  $('resetPreview').hidden = !previewing;
+  $('peekHint').hidden = previewing || S.touched;
+  var sl = $('peekSlider');
+  if (parseInt(sl.value, 10) !== view) sl.value = view;
+  sl.setAttribute('aria-valuetext', view + ' of 21 leaves');
+  $('viewBar').style.width = (Math.round(view / TREE_SIZE * 1000) / 10) + '%';
+  $('realBar').style.width = (Math.round(count / TREE_SIZE * 1000) / 10) + '%';
+  $('todayCount').textContent = count;
+  $('waterBtn').hidden = S.phase !== 'ready';
+  $('doneBtn').hidden = !canPeek;
+  $('doneBtn').textContent = S.phase === 'grown' ? 'Done for today' : 'Back to today';
+  $('savedNote').hidden = !canPeek;
+}
+
+function demo() {
+  if (S.demoed || S.touched) return;
+  var v = S.leaves.length;
+  stopDemo();
+  S.demoed = true;
+  d1 = setInterval(function () {
+    v++;
+    if (v > TREE_SIZE) {
+      clearInterval(d1); d1 = null;
+      d2 = setTimeout(function () { S.preview = null; updateTree(); }, 2200);
+      return;
     }
-    var branches = BRANCHES.map(function (b) {
-      var vis = b.s <= sv + 1, real = b.s <= si + 1;
-      return { d: b.d, w: b.w, op: vis ? 1 : 0, c: real ? '#5C5348' : '#C4BDB3' };
-    });
-    var birds = BIRDS.filter(function (b) { return view >= b.t; }).map(function (b, i) {
-      var real = count >= b.t, pl = PLUM[b.p];
-      return { x: b.x, y: b.y, s: b.s, sx: (b.flip ? -1 : 1) * b.s, kind: b.kind, anim: b.kind === 'ground' ? 'peck' : (b.kind === 'perch' ? 'hop' : ''),
-        c: pl.c, belly: pl.belly, wing: pl.wing, op: real ? 1 : 0.72, dl: (-(i * 1.3)) + 's' };
-    });
-    var fillN = Math.min(FILL.length, Math.round(view * 2.6));
-    var fillReal = Math.round(count * 2.6);
-    var filler = FILL.slice(0, fillN).map(function (p, i) {
-      var real = i < fillReal, tall = i % 3 === 0;
-      return { x: p[0], y: p[1], rx: tall ? 6 : 8, ry: tall ? 8 : 5.5, c: real ? GREENS[i % 4] : '#D4D0C9', op: real ? 0.55 : 0.5,
-        d: (8 + (i * 5) % 6) + 's', dl: (-((i * 3) % 10)) + 's' };
-    });
-    var gf = view / TREE_SIZE;
-    var canopy = gf > 0 ? [
-      { x: 152, y: 162, rx: Math.round(22 + 74 * gf), ry: Math.round(18 + 62 * gf), c: '#CFE0C2', o: 0.3 + 0.3 * gf },
-      { x: 126, y: 150, rx: Math.round(10 + 40 * gf), ry: Math.round(8 + 34 * gf), c: '#E3E9C8', o: 0.25 + 0.25 * gf },
-      { x: 182, y: 140, rx: Math.round(10 + 38 * gf), ry: Math.round(8 + 30 * gf), c: '#C9DCCB', o: 0.25 + 0.25 * gf }
-    ] : [];
-    var blossoms = view >= TREE_SIZE ? BLOSSOMS.map(function (p, i) {
-      return { x: p[0], y: p[1], c: count >= TREE_SIZE ? '#E9A3B5' : '#D2CDC6', d: (6 + i % 4) + 's', dl: (-i) + 's' };
-    }) : [];
-    var left = Math.max(0, TREE_SIZE - count);
-    var stageBars = STAGES.map(function (st, i) {
-      var lo = STAGE_START[i], hi = st.upTo, pct = Math.max(0, Math.min(1, (count - lo) / (hi - lo)));
-      return { name: st.name, pct: Math.round(pct * 100), color: i === si ? '#2E2C29' : '#8A847B' };
-    });
-    var m = Math.floor(s.remaining / 60), sec = s.remaining % 60;
+    S.preview = v; updateTree();
+  }, 140);
+}
+function goTree() {
+  S.phase = 'idle'; S.preview = null;
+  show('tree');
+  $('s-tree').classList.add('in');
+  updateTree();
+  stopDemo();
+  d0 = setTimeout(demo, 1400);
+}
+function water() {
+  S.phase = 'pouring'; updateTree();
+  clearTimeout(t3);
+  t3 = setTimeout(function () {
+    S.phase = 'grown';
+    S.leaves = S.leaves.concat([S.fearId]);
+    saveLeaves();
+    updateTree();
+    stopDemo();
+    d0 = setTimeout(demo, 2600);
+  }, 2300);
+}
 
-    var treeTitle, treeNote;
-    if (s.phase === 'ready') { treeTitle = 'Time to water.'; treeNote = 'You did the dare. Give your tree a little water and see what grows.'; }
-    else if (s.phase === 'pouring') { treeTitle = 'Watering…'; treeNote = 'Let it soak in.'; }
-    else if (s.phase === 'grown') { treeTitle = 'A new leaf.'; treeNote = '“' + f0.label + '” became something growing. ' + (left ? left + ' more and your tree is in full bloom.' : 'Your tree is in full bloom.'); }
-    else { treeTitle = STAGES[si].title; treeNote = count + ' leaves, one for every time you made something anyway. ' + (left ? left + ' more until it blooms.' : 'It is in full bloom.'); }
-    if (previewing) {
-      var ahead = view - count;
-      treeTitle = STAGES[sv].title;
-      treeNote = view >= TREE_SIZE
-        ? 'Where this is going: a tree in full bloom, and birds that come to stay. ' + ahead + ' more dares.'
-        : ahead + (ahead === 1 ? ' more dare' : ' more dares') + ' from now. The gray leaves are waiting for you.';
-    }
+/* ---------- native mobile carousels ---------- */
+function nativeMobile() { return innerWidth < 768; }
+var pickScroller = createNudgeScroller($('hintwrap'), nativeMobile, function (index) {
+  S.idx = Math.max(0, Math.min(N - 1, index)); S.swiped = true; updatePick();
+});
+var previousDare = 0, nextDare = 0;
+function refreshDareSwipe() {
+  var dares = fearOf(S.fearId).dares;
+  var choices = dares.map(function (_, i) { return i; }).filter(function (i) { return i !== S.dareIdx; });
+  previousDare = choices[Math.floor(Math.random() * choices.length)];
+  nextDare = choices[Math.floor(Math.random() * choices.length)];
+  $('darePrevious').textContent = dares[previousDare];
+  $('dareNext').textContent = dares[nextDare];
+  card.style.transition = 'none'; setCard(0, 1);
+  dareScroller.set(nativeMobile() ? 1 : 0);
+}
+var dareScroller = createNudgeScroller($('dareSwipe'), nativeMobile, function (index) {
+  if (index === 1 || S.screen !== 'dare') return;
+  S.dareIdx = index === 0 ? previousDare : nextDare; S.dareNo++;
+  $('dareText').textContent = fearOf(S.fearId).dares[S.dareIdx];
+  $('dareNo').textContent = S.dareNo;
+  refreshDareSwipe();
+});
 
-    return {
-      isPick: s.screen === 'pick', isDare: s.screen === 'dare', isTimer: s.screen === 'timer', isTree: s.screen === 'tree',
-      panels: panels,
-      trackX: -s.idx * W + drag,
-      trackTr: s.dragging ? 'none' : 'transform 520ms cubic-bezier(.2,.8,.25,1)',
-      hintCls: s.swiped ? '' : 'hint',
-      showSwipeHint: !s.swiped,
-      dots: panels.map(function (_, i) { return { w: i === s.idx ? 18 : 5, bg: i === s.idx ? '#2E2C29' : 'rgba(46, 44, 41, 0.25)' }; }),
-      position: (s.idx + 1) + ' of ' + nPanels,
-      prevOp: s.idx === 0 ? 0.25 : 1,
-      nextOp: s.idx === nPanels - 1 ? 0.25 : 1,
-      chooseLabel: s.idx === nPanels - 1 ? 'Surprise me' : 'This is it',
-      leafCount: count,
+/* ---------- events ---------- */
+var ACT = {
+  choose: function () {
+    if (nativeMobile()) pickScroller.flush();
+    pickFear(S.idx === N - 1 ? FEARS[Math.floor(Math.random() * FEARS.length)].id : FEARS[S.idx].id);
+  },
+  prev: function () { go(S.idx - 1); },
+  next: function () { go(S.idx + 1); },
+  page: function (button) { go(parseInt(button.getAttribute('data-index'), 10)); },
+  tree: goTree,
+  back: goPick,
+  dareprev: function () { swapDare(-1); },
+  darenext: function () { swapDare(1); },
+  begin: function () { if (nativeMobile()) dareScroller.flush(); begin(); },
+  pause: function () { if (S.running) { stopTimer(); S.running = false; updateClock(); } else if (S.remaining > 0) { startTimer(); } },
+  finish: function () { stopTimer(); S.running = false; S.phase = 'ready'; show('tree'); $('s-tree').classList.add('in'); updateTree(); },
+  notnow: function () { stopTimer(); S.running = false; S.remaining = TOTAL; show('dare'); refreshDareSwipe(); },
+  water: water,
+  resetpreview: function () { stopDemo(); S.preview = null; updateTree(); }
+};
+var frame = $('frame');
+frame.addEventListener('click', function (e) {
+  var b = e.target.closest('[data-act]');
+  if (!b || moved) return;
+  ACT[b.getAttribute('data-act')](b);
+});
+$('peekSlider').addEventListener('input', function (e) {
+  var v = parseInt(e.target.value, 10);
+  stopDemo();
+  S.preview = v <= S.leaves.length ? null : v;
+  S.touched = true;
+  updateTree();
+});
 
-      fear: { label: f0.label, upper: f0.label.toUpperCase(), lines: f0.lines, reframe: f0.reframe, art: a0.art, base: a0.base },
-      dare: f0.dares[s.dareIdx],
-      dareNo: s.dareNo,
-      cardX: s.screen === 'dare' && s.dragging ? s.drag * 0.9 : s.cardX,
-      cardRot: (s.screen === 'dare' && s.dragging ? s.drag : s.cardX) / 60,
-      cardOp: s.screen === 'dare' && s.dragging ? Math.max(0.3, 1 - Math.abs(s.drag) / 300) : s.cardOp,
-      cardTr: s.dragging ? 'none' : s.cardTr,
-
-      clock: m + ':' + (sec < 10 ? '0' : '') + sec,
-      clockNote: s.remaining === 0 ? "Time's up. How did it go?" : (s.running ? 'The color fills in as you work' : 'Paused'),
-      veil: Math.round(280 * s.remaining / TOTAL),
-      running: s.running, paused: !s.running,
-      pauseLabel: s.running ? 'Pause timer' : 'Resume timer',
-
-      branches: branches,
-      leaves: leaves,
-      rain: RAIN.map(function (r) { return { x: r[0], y: r[1], dl: r[2] + 's' }; }),
-      pouring: s.phase === 'pouring',
-      needsWater: s.phase === 'ready',
-      showDone: s.phase !== 'ready' && s.phase !== 'pouring',
-      stageKicker: (previewing ? 'PREVIEW · ' : '') + 'STAGE ' + (sv + 1) + ' OF 4',
-      perchBirds: birds.filter(function (b) { return b.kind !== 'fly'; }),
-      flyBirds: birds.filter(function (b) { return b.kind === 'fly'; }),
-      blossoms: blossoms,
-      filler: filler,
-      canopy: canopy,
-      showSlider: canPeek,
-      previewing: previewing,
-      showPeekHint: !previewing && !s.touched,
-      sliderVal: view,
-      sliderText: view + ' of 21 leaves',
-      realPct: Math.round(count / TREE_SIZE * 1000) / 10,
-      viewPct: Math.round(view / TREE_SIZE * 1000) / 10,
-      ticks: [{ f: 7 / 21 }, { f: 14 / 21 }, { f: 20 / 21 }],
-      treeAria: 'Your tree, with ' + count + ' leaves' + (previewing ? ', previewing ' + view : ''),
-      scrub: function (e) {
-        var v = parseInt(e.target.value, 10);
-        self.stopDemo();
-        self.setState({ preview: v <= self.state.leaves.length ? null : v, touched: true });
-      },
-      resetPreview: function () { self.stopDemo(); self.setState({ preview: null }); },
-      stageBars: stageBars,
-      treeTitle: treeTitle,
-      treeNote: treeNote,
-      treeCta: s.phase === 'grown' ? 'Done for today' : 'Back to today',
-      showKeep: false, kept: s.phase !== 'ready' && s.phase !== 'pouring',
-
-      down: function (e) {
-        if (s.screen !== 'pick' && s.screen !== 'dare') return;
-        self.x0 = e.clientX; self.moved = false; self.active = true;
-      },
-      move: function (e) {
-        if (!self.active) return;
-        var dx = e.clientX - self.x0;
-        if (Math.abs(dx) > 8) self.moved = true;
-        if (self.moved) self.setState({ drag: dx, dragging: true });
-      },
-      up: function (e) {
-        if (!self.active) return;
-        self.active = false;
-        var dx = self.state.drag;
-        self.setState({ dragging: false, drag: 0 });
-        if (!self.moved) return;
-        setTimeout(function () { self.moved = false; }, 50);
-        if (self.state.screen === 'pick') {
-          if (dx < -60) self.go(self.state.idx + 1);
-          else if (dx > 60) self.go(self.state.idx - 1);
-        } else if (self.state.screen === 'dare') {
-          if (Math.abs(dx) > 70) self.swapDare(dx < 0 ? 1 : -1);
-        }
-      },
-      prev: function () { self.go(s.idx - 1); },
-      next: function () { self.go(s.idx + 1); },
-      chooseCurrent: function () {
-        if (self.moved) return;
-        if (s.idx === nPanels - 1) self.pickFear(FEARS[Math.floor(Math.random() * FEARS.length)].id);
-        else self.pickFear(FEARS[s.idx].id);
-      },
-      nextDare: function () { self.swapDare(1); },
-      prevDare: function () { self.swapDare(-1); },
-      goPick: function () { self.stop(); self.stopDemo(); self.setState({ screen: 'pick', phase: 'idle', preview: null }); },
-      goTree: function () {
-        self.setState({ screen: 'tree', phase: 'idle', preview: null });
-        self.stopDemo();
-        self.d0 = setTimeout(function () { self.demo(); }, 1400);
-      },
-      goDare: function () { self.stop(); self.setState({ screen: 'dare', remaining: TOTAL, running: false }); },
-      accept: function () { if (self.moved) return; self.setState({ screen: 'timer', remaining: TOTAL }); self.start(); },
-      togglePause: function () { if (s.running) { self.stop(); self.setState({ running: false }); } else if (s.remaining > 0) { self.start(); } },
-      finish: function () { self.stop(); self.setState({ screen: 'tree', running: false, phase: 'ready' }); },
-      water: function () {
-        self.setState({ phase: 'pouring' });
-        clearTimeout(self.t3);
-        self.t3 = setTimeout(function () {
-          var grown = self.state.leaves.concat([self.state.fearId]); saveLeaves(grown); self.setState({ phase: 'grown', leaves: grown });
-          self.stopDemo();
-          self.d0 = setTimeout(function () { self.demo(); }, 2600);
-        }, 2300);
-      },
-      keep: function () { self.setState({ kept: true }); }
-    };
+function startDrag(x, target) {
+  if (S.screen !== 'pick' && S.screen !== 'dare') return;
+  if (target && target.closest && target.closest('button,a,input')) return;
+  x0 = x; moved = false; active = true; drag = 0;
+}
+function moveDrag(x) {
+  if (!active) return;
+  var dx = (x - x0) / K;
+  if (Math.abs(dx) > 8) moved = true;
+  if (!moved) return;
+  drag = dx; dragging = true;
+  if (S.screen === 'pick') updatePick();
+  else { card.style.transition = 'none'; setCard(drag * 0.9, Math.max(0.3, 1 - Math.abs(drag) / 300)); }
+}
+/* Desktop keeps its existing drag behavior; mobile uses native scroll surfaces. */
+document.addEventListener('pointerdown', function (e) {
+  if (innerWidth < 768 || e.pointerType === 'touch') return;
+  startDrag(e.clientX, e.target);
+});
+document.addEventListener('pointermove', function (e) {
+  if (innerWidth < 768 || e.pointerType === 'touch') return;
+  moveDrag(e.clientX);
+});
+function endDrag() {
+  if (!active) return;
+  active = false;
+  var dx = drag;
+  dragging = false; drag = 0;
+  if (!moved) return;
+  setTimeout(function () { moved = false; }, 50);
+  if (S.screen === 'pick') {
+    if (dx < -60) go(S.idx + 1);
+    else if (dx > 60) go(S.idx - 1);
+    else updatePick();
+  } else if (S.screen === 'dare') {
+    if (Math.abs(dx) > 70) swapDare(dx < 0 ? 1 : -1);
+    else { card.style.transition = 'transform 380ms cubic-bezier(.2,.8,.3,1), opacity 380ms ease'; setCard(0, 1); }
   }
 }
-</script>
-<script>
-(function () {
-  var fit = document.getElementById('fit'), frame = document.getElementById('frame'), bar = document.getElementById('bar');
-  function size() {
-    var wide = window.matchMedia('(min-width:900px) and (min-height:560px)').matches;
-    var s = wide ? Math.min((window.innerHeight - 64) / 844, (window.innerWidth - 620) / 390, 1.1)
-                 : Math.min(window.innerWidth / 390, (window.innerHeight - 32) / 844, 1.3);
-    frame.style.transform = 'scale(' + s + ')';
-    fit.style.width = (390 * s) + 'px';
-    fit.style.height = (844 * s) + 'px';
-    bar.style.width = (390 * s) + 'px';
+['pointerup', 'pointercancel'].forEach(function (n) {
+  document.addEventListener(n, function (e) { if (e.pointerType !== 'touch') endDrag(); });
+});
+
+
+addEventListener('keydown', function (e) {
+  if (e.target && /^(INPUT|TEXTAREA)$/.test(e.target.tagName)) return;
+  var dir = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+  if (!dir) return;
+  if (S.screen === 'pick') { e.preventDefault(); go(S.idx + dir); }
+  else if (S.screen === 'dare') { e.preventDefault(); swapDare(dir); }
+});
+
+/* ---------- fit to screen ---------- */
+function fit() {
+  var wide = innerWidth >= 768, w = $('wrap'), fw, fh;
+  if (wide) { K = 1; fw = innerWidth; fh = innerHeight; frame.style.transform = 'none'; }
+  else {
+    K = 1;
+    fw = innerWidth;
+    fh = innerHeight;
+    frame.style.transform = 'none';
   }
-  size();
-  window.addEventListener('resize', size);
-  mountDC(Component, frame, document.getElementById('tpl'));
+  W = fw;
+  frame.style.width = fw + 'px'; frame.style.height = fh + 'px';
+  frame.style.setProperty('--pw', fw + 'px'); frame.style.setProperty('--ph', fh + 'px');
+  frame.style.setProperty('--artH', Math.max(150, Math.min(300, fh - 400)) + 'px');
+  frame.style.setProperty('--txtB', Math.max(168, Math.min(196, fh - 440)) + 'px');
+  w.style.width = Math.round(fw * K) + 'px'; w.style.height = Math.round(fh * K) + 'px';
+  document.body.classList.toggle('wide', wide);
+  document.body.classList.toggle('desk', !wide && innerWidth > 520);
+  updatePick();
+  pickScroller.set(wide ? 0 : S.idx);
+  if (S.screen === 'dare') refreshDareSwipe();
+}
+addEventListener('resize', fit);
+fit();
+updatePick();
 })();
 </script>
 </body>
