@@ -7,8 +7,7 @@ Pages
   /nudge/        The Nudge (the tree is saved in the visitor's own browser)
   /designers/    Tools for designers
   /final-final/  Final Final (og.png is its link preview image)
-  /dead-artists/    What Would Dead Artists Do (parody chat, scripted answers)
-  /dead-designers/  What Would Dead Designers Do (parody chat, scripted answers)
+  The two "dead artists" and "dead designers" cards link out to https://stilllife.nino.studio
 
 Put it online with GitHub Pages
   1. On github.com create a new public repository, for example "tools".
